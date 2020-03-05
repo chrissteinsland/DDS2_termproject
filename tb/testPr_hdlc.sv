@@ -165,7 +165,7 @@ program testPr_hdlc(
      assert (ReadData == 0) $display("AAAAAAAAAAAAA"); 
       else begin
         TbErrorCnt++;
-        $display("Error: data in RXBuf is not zero"); 
+        $display("Error: data in RXBuf is not zero, when testing for drop"); 
       end
     end
   endtask
@@ -191,7 +191,7 @@ program testPr_hdlc(
      assert (ReadData == 0) 
       else begin
         TbErrorCnt++;
-        $display("Error: data in RXBuf is not zero"); 
+        $display("Error: data in RXBuf is not zeroi, when testing for frame error"); 
       end
     end
   endtask
@@ -366,6 +366,25 @@ program testPr_hdlc(
     InsertFlagOrAbort(1);
     
     MakeRxStimulus(ReceiveData, Size + 2);
+
+
+    if(FCSerror) begin
+     /*     Proposed pseudocode for testing FCS
+        Generate some random bytes
+        Randomize placement in data
+        Replace the good bytes with bad bytes
+     */
+    end
+
+    if(Drop) begin
+      logic [7:0] rx_status;
+      ReadAddress(RXSC, rx_status);
+      logic [7:0] dropmask;
+      dropmask = 0x2 || rx_status;
+	  $display("Dropmask is: %x", dropmask);
+      WriteAddress(RXSC, dropmask);
+    end	
+
     
     if(Overflow) begin
       OverflowData[0] = 8'h44;
