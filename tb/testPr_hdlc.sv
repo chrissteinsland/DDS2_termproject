@@ -122,7 +122,7 @@ program testPr_hdlc(
 
     for(int i = 0; i < Size; i++) begin
      ReadAddress(RXBuf, ReadData); 
-     assert (ReadData == 0) 
+     assert (ReadData == 0) $display("rx_status is: %d", rx_status);
       else begin
         TbErrorCnt++;
         $display("Error: data in RXBuf is not zero, when testing for drop"); 
