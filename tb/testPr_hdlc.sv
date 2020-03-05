@@ -112,22 +112,21 @@ program testPr_hdlc(
     logic [7:0] ReadData;
     logic [7:0] rx_status;
   
-    /* Uncomment and edit if validation 
+   
 	//Check for RX Drop flag
      ReadAddress(RXSC, rx_status);
+	 $display("rx_status = %d", rx_status);
      assert(rx_status[1] != 0)
       else begin 
         TbErrorCnt++;
         $display("Error: Drop flag not set at time %0t! (rx_status = %d)", $time, rx_status);
       end
-    */
-
 
     //Check that RXBuf is zero
 
     for(int i = 0; i < Size; i++) begin
      ReadAddress(RXBuf, ReadData); 
-     assert (ReadData == 0) $display("rx_status is: %d", rx_status);
+     assert (ReadData == 0) 
       else begin
         TbErrorCnt++;
         $display("Error: data in RXBuf is not zero, when testing for drop"); 
