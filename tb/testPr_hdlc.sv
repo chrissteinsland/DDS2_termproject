@@ -325,14 +325,29 @@ program testPr_hdlc(
 
     //Generate stimulus
     InsertFlagOrAbort(1);
-    
     MakeRxStimulus(ReceiveData, Size + 2);
-    
+
     if(Overflow) begin
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
       OverflowData[2] = 8'hCC;
       MakeRxStimulus(OverflowData, 3);
+    end
+    
+    if(FCSerror) begin
+     /*     Proposed pseudocode for testing FCS
+        Generate some random bytes
+        Randomize placement in data
+        Replace the good bytes with bad bytes
+     */
+    end
+
+    if(Drop) begin
+      logic [7:0] rx_status;
+      ReadAddress(RXSC, rx_status);
+      logic [7:0] Dropmask;
+      Dropmask = 0x1 || rx_status;
+      WriteAddress(RXSC, Dropmask);
     end
 
     if(Abort) begin
