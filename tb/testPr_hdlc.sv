@@ -111,13 +111,15 @@ program testPr_hdlc(
     logic [7:0] rx_status;
   
     //Check for RX Drop flag
-    
+    $display("Reading rx_status in VerifyDrop...") 
      ReadAddress(RXSC, rx_status);
+    $display("Status read successfully") 
      assert(rx_status[1] != 0)
       else begin 
         TbErrorCnt++;
         $display("Error: Drop flag not set at time %0t!", $time);
       end
+    $display("Fuck off") 
     
     //Check that RXBuf is zero
 
