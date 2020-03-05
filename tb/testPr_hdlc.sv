@@ -36,6 +36,7 @@ program testPr_hdlc(
     logic [127:0][7:0] ReceiveData;
     logic       [15:0] FCSBytes;
 
+    string msg;
     if(Mismatch)
       msg = "- Mismatch";
     else
