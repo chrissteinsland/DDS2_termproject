@@ -29,6 +29,7 @@ program testPr_hdlc(
    *                               Student code                               *
    *                                                                          *
    ****************************************************************************/
+  // Test comment to see commit for remote server
 
   // VerifyAbortReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer is zero after abort.
