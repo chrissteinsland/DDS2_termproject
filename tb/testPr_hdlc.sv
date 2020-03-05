@@ -69,8 +69,8 @@ program testPr_hdlc(
 
     // Create a mismatch case
     if (Mismatch) begin
-        int wrong_element = $urandom % Size;
-        ReceiveData[wrong_element]++;
+        //int wrong_element = $urandom % Size;
+        ReceiveData[2]++;
     end
 
     // Verify
