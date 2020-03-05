@@ -371,8 +371,8 @@ program testPr_hdlc(
       VerifyOverflowReceive(ReceiveData, Size);
      else if(Drop)
       VerifyDropReceive(ReceiveData, Size);
-    else if(FCSerr)
-   //   VerifyFrameErrorReceive(ReceiveData, Size);
+   /* else if(FCSerr)
+      VerifyFrameErrorReceive(ReceiveData, Size);*/
 	else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
 
