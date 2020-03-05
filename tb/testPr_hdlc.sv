@@ -111,21 +111,18 @@ program testPr_hdlc(
     logic [7:0] rx_status;
   
     //Check for RX Drop flag
-    $display("Reading rx_status in VerifyDrop...");
      ReadAddress(RXSC, rx_status);
-    $display("Status read successfully");
      assert(rx_status[1] != 0)
       else begin 
         TbErrorCnt++;
         $display("Error: Drop flag not set at time %0t!", $time);
       end
-    $display("Fuck off");
     
     //Check that RXBuf is zero
 
     for(int i = 0; i < Size; i++) begin
      ReadAddress(RXBuf, ReadData); 
-     assert (ReadData == 0) $display("AAAAAAAAAAAAA"); 
+     assert (ReadData == 0); 
       else begin
         TbErrorCnt++;
         $display("Error: data in RXBuf is not zero, when testing for drop"); 
@@ -141,7 +138,7 @@ program testPr_hdlc(
     //Check for RX FCSErr flag
     
      ReadAddress(RXSC, rx_status);
-     assert(rx_status[2] != 0) $display("AAAAAAAAAAAAA");
+     assert(rx_status[2] != 0);
       else begin 
         TbErrorCnt++;
         $display("Error: FCSErr flag not set at time %0t!", $time);
@@ -341,13 +338,12 @@ program testPr_hdlc(
 
     if(Drop) begin
       logic [7:0] rx_status;
-      //logic [7:0] dropmask;
+      logic [7:0] dropmask;
       ReadAddress(RXSC, rx_status);
 	  $display("rx_status is: %d", rx_status);
-      //dropmask = (8'b00000010 | rx_status);
-      //$display("Dropmask is: %d", dropmask);
-	  //WriteAddress(RXSC, 2);
-	  //$display("Am I slow?");
+      dropmask = (8'b00000010 | rx_status);
+      $display("Dropmask is: %d", dropmask);
+	  WriteAddress(RXSC, 2);
     end	
 
     if(Overflow) begin
@@ -376,7 +372,7 @@ program testPr_hdlc(
      else if(Drop)
       VerifyDropReceive(ReceiveData, Size);
     else if(FCSerr)
-      VerifyFrameErrorReceive(ReceiveData, Size);
+   //   VerifyFrameErrorReceive(ReceiveData, Size);
 	else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
 
