@@ -366,9 +366,10 @@ program testPr_hdlc(
     @(posedge uin_hdlc.Clk);
     uin_hdlc.Rx = 1'b1;
 
+		$display("2");
     repeat(8)
       @(posedge uin_hdlc.Clk);
-
+		$display("3");
     if(Abort)
       VerifyAbortReceive(ReceiveData, Size);
     else if(Overflow)
@@ -380,6 +381,7 @@ program testPr_hdlc(
     else if(FCSerr)
       VerifyFrameErrorReceive(ReceiveData, Size);
 
+		$display("4");
 
     #5000ns;
   endtask
