@@ -340,19 +340,17 @@ program testPr_hdlc(
     end
 
     if(Drop) begin
-      /*logic [7:0] rx_status;
-      logic [7:0] dropmask;
+      logic [7:0] rx_status;
+      //logic [7:0] dropmask;
       ReadAddress(RXSC, rx_status);
 	  $display("rx_status is: %x", rx_status);
-      dropmask = (8'b00000010 | rx_status);
-      $display("Dropmask is: %x", dropmask);
-      */
-	  WriteAddress(RXSC, 2);
-	  $display("Am I slow?");
+      //dropmask = (8'b00000010 | rx_status);
+      //$display("Dropmask is: %x", dropmask);
+	  //WriteAddress(RXSC, 2);
+	  //$display("Am I slow?");
     end	
 
     if(Overflow) begin
-		$display("Overflow fucked up");
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
       OverflowData[2] = 8'hCC;
@@ -360,7 +358,6 @@ program testPr_hdlc(
     end
 
     if(Abort) begin
-		$display("Abort fucked up");
       InsertFlagOrAbort(0);
     end else begin
       InsertFlagOrAbort(1);
