@@ -122,7 +122,7 @@ program testPr_hdlc(
 
     for(int i = 0; i < Size; i++) begin
      ReadAddress(RXBuf, ReadData); 
-     assert (ReadData == 0); 
+     assert (ReadData == 0) 
       else begin
         TbErrorCnt++;
         $display("Error: data in RXBuf is not zero, when testing for drop"); 
@@ -138,7 +138,7 @@ program testPr_hdlc(
     //Check for RX FCSErr flag
     
      ReadAddress(RXSC, rx_status);
-     assert(rx_status[2] != 0);
+     assert(rx_status[2] != 0)
       else begin 
         TbErrorCnt++;
         $display("Error: FCSErr flag not set at time %0t!", $time);
