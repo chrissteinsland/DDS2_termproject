@@ -30,45 +30,6 @@ program testPr_hdlc(
    *                                                                          *
    ****************************************************************************/
 
-  task TestRxBuffer()
-    // Generate data
-    // Normal cases
-    // Error cases
-    logic [127:0][7:0] ReceiveData;
-    logic       [15:0] FCSBytes;
-    logic   [2:0][7:0] OverflowData;
-    string msg;
-    if(Normal)
-      msg = "- Normal";
-    else
-      msg = "- Error";
-    $display("*************************************************************");
-    $display("%t - Starting task VerifyRxBuffer %s", $time, msg);
-    $display("*************************************************************");
-
-    for (int i = 0; i < Size; i++) begin
-      ReceiveData[i] = $urandom;
-    end
-    ReceiveData[Size]   = '0;
-    ReceiveData[Size+1] = '0;
-
-    //Calculate FCS bits;
-    GenerateFCSBytes(ReceiveData, Size, FCSBytes);
-    ReceiveData[Size]   = FCSBytes[7:0];
-    ReceiveData[Size+1] = FCSBytes[15:8];
-
-    //Enable FCS
-    if(!Overflow && !NonByteAligned)
-      WriteAddress(RXSC, 8'h20);
-    else
-      WriteAddress(RXSC, 8'h00);
-
-    //Generate stimulus
-    InsertFlagOrAbort(1);
-    
-    MakeRxStimulus(ReceiveData, Size + 2);
-  endtask
-
   // VerifyAbortReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer is zero after abort.
   task VerifyAbortReceive(logic [127:0][7:0] data, int Size);  
@@ -368,7 +329,7 @@ program testPr_hdlc(
     MakeRxStimulus(ReceiveData, Size + 2);
 
 
-    if(FCSerror) begin
+    if(FCSerr) begin
      /*     Proposed pseudocode for testing FCS
         Generate some random bytes
         Randomize placement in data
