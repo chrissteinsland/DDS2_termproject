@@ -103,6 +103,8 @@ program testPr_hdlc(
         $display("Error: rx_status is not correct! %d", rx_status);
       end 
     
+	// VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+
   endtask
   
   task VerifyDropReceive(logic [127:0][7:0] data, int Size);  
@@ -110,14 +112,17 @@ program testPr_hdlc(
     logic [7:0] ReadData;
     logic [7:0] rx_status;
   
-    //Check for RX Drop flag
+    /* Uncomment and edit if validation 
+	//Check for RX Drop flag
      ReadAddress(RXSC, rx_status);
      assert(rx_status[1] != 0)
       else begin 
         TbErrorCnt++;
         $display("Error: Drop flag not set at time %0t! (rx_status = %d)", $time, rx_status);
       end
-    
+    */
+
+
     //Check that RXBuf is zero
 
     for(int i = 0; i < Size; i++) begin
@@ -343,7 +348,7 @@ program testPr_hdlc(
 	  $display("rx_status is: %d", rx_status);
       dropmask = (8'b00000010 | rx_status);
       $display("Dropmask is: %d", dropmask);
-	  WriteAddress(RXSC, 2);
+	  WriteAddress(RXSC, dropmask);
     end	
 
     if(Overflow) begin
