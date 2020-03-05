@@ -115,7 +115,7 @@ program testPr_hdlc(
      assert(rx_status[1] != 0)
       else begin 
         TbErrorCnt++;
-        $display("Error: Drop flag not set at time %0t!", $time);
+        $display("Error: Drop flag not set at time %0t! (rx_status = %d)", $time, rx_status);
       end
     
     //Check that RXBuf is zero
