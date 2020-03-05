@@ -339,10 +339,10 @@ program testPr_hdlc(
 
     if(Drop) begin
       logic [7:0] rx_status;
-      ReadAddress(RXSC, rx_status);
       logic [7:0] dropmask;
-      dropmask = 0x2 || rx_status;
-	  $display("Dropmask is: %x", dropmask);
+      ReadAddress(RXSC, rx_status);
+      dropmask = (8'b00000010 || rx_status);
+      $display("Dropmask is: %x", dropmask);
       WriteAddress(RXSC, dropmask);
     end	
 
