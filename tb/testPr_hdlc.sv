@@ -344,6 +344,7 @@ program testPr_hdlc(
       dropmask = (8'b00000010 || rx_status);
       $display("Dropmask is: %x", dropmask);
       WriteAddress(RXSC, dropmask);
+	  $display("Am I slow?");
     end	
 
     
