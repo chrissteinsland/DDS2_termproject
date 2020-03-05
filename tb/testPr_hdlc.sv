@@ -352,7 +352,7 @@ program testPr_hdlc(
     end	
 
     if(Overflow) begin
-		$display("Overflow fucked up")
+		$display("Overflow fucked up");
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
       OverflowData[2] = 8'hCC;
@@ -360,7 +360,7 @@ program testPr_hdlc(
     end
 
     if(Abort) begin
-		$display("Abort fucked up")
+		$display("Abort fucked up");
       InsertFlagOrAbort(0);
     end else begin
       InsertFlagOrAbort(1);
