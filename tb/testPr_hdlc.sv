@@ -343,13 +343,13 @@ program testPr_hdlc(
       logic [7:0] rx_status;
       //logic [7:0] dropmask;
       ReadAddress(RXSC, rx_status);
-	  $display("rx_status is: %x", rx_status);
+	  $display("rx_status is: %d", rx_status);
       //dropmask = (8'b00000010 | rx_status);
-      //$display("Dropmask is: %x", dropmask);
+      //$display("Dropmask is: %d", dropmask);
 	  //WriteAddress(RXSC, 2);
 	  //$display("Am I slow?");
     end	
-
+		$display("lol");
     if(Overflow) begin
       OverflowData[0] = 8'h44;
       OverflowData[1] = 8'hBB;
