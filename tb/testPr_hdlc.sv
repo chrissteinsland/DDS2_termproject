@@ -338,8 +338,8 @@ program testPr_hdlc(
     end
 
     if(Drop) begin
-      int [7:0] rx_status;
-      int [7:0] dropmask;
+      logic [7:0] rx_status;
+      logic [7:0] dropmask;
       ReadAddress(RXSC, rx_status);
 	  $display("rx_status is: %x", rx_status);
       dropmask = (8'b00000010 | rx_status);
