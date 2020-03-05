@@ -32,32 +32,134 @@ program testPr_hdlc(
 
   // VerifyAbortReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer is zero after abort.
-  task VerifyAbortReceive(logic [127:0][7:0] data, int Size);
+  task VerifyAbortReceive(logic [127:0][7:0] data, int Size);  
+    // data is not being used in this case!
     logic [7:0] ReadData;
+    logic [7:0] rx_status;
+  
+    //Check for RX Abort flag
+    
+     ReadAddress(RXSC, rx_status);
+     assert(rx_status[3] != 0)
+      else begin 
+        TbErrorCnt++;
+        $display("Error: Abort flag not set at time %0t!", $time);
+      end
+    
+    //Check that RXBuf is zero
 
-    // INSERT CODE HERE
-
+    for(int i = 0; i < Size; i++) begin
+     ReadAddress(RXBuf, ReadData); 
+     assert (ReadData == 0) 
+      else begin
+        TbErrorCnt++;
+        $display("Error: data in RXBuf is not zero"); 
+      end
+    end
   endtask
 
   // VerifyNormalReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer contains correct data.
   task VerifyNormalReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
+    logic [7:0] rx_status;
     wait(uin_hdlc.Rx_Ready);
 
     // INSERT CODE HERE
-  
+    // Check RX status/control
+    ReadAddress(RXSC, rx_status);
+      assert(rx_status[0] && !rx_status[1] && !rx_status[2] && !rx_status[3])
+        else begin
+          TbErrorCnt++; 
+          $display("Error: rx_status is not correct! %d", rx_status);
+        end 
+
+    //Check that Rx data is correct
+    for(int i = 0; i < Size; i++) begin
+      ReadAddress(RXBuf, ReadData);
+      assert(ReadData == data[i])
+        else begin
+          TbErrorCnt++;
+          $display("Error: Data in RXBuf is not equal to RX_data");
+        end
+    end
   endtask
 
-  // VerifyNormalReceive should verify correct value in the Rx status/control
+  // VerifyOverflowReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer contains correct data.
   task VerifyOverflowReceive(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
+    logic [7:0] rx_status;
+
     wait(uin_hdlc.Rx_Ready);
 
     // INSERT CODE HERE
-  
+
+    // Check RX status/control
+    ReadAddress(RXSC, rx_status);
+    assert(rx_status[4])
+      else begin
+        TbErrorCnt++; 
+        $display("Error: rx_status is not correct! %d", rx_status);
+      end 
+    
   endtask
+  
+  task VerifyDropReceive(logic [127:0][7:0] data, int Size);  
+    // data is not being used in this case!
+    logic [7:0] ReadData;
+    logic [7:0] rx_status;
+  
+    //Check for RX Drop flag
+    
+     ReadAddress(RXSC, rx_status);
+     assert(rx_status[1] != 0)
+      else begin 
+        TbErrorCnt++;
+        $display("Error: Drop flag not set at time %0t!", $time);
+      end
+    
+    //Check that RXBuf is zero
+
+    for(int i = 0; i < Size; i++) begin
+     ReadAddress(RXBuf, ReadData); 
+     assert (ReadData == 0) $display("AAAAAAAAAAAAA"); 
+      else begin
+        TbErrorCnt++;
+        $display("Error: data in RXBuf is not zero"); 
+      end
+    end
+  endtask
+
+   task VerifyFrameErrorReceive(logic [127:0][7:0] data, int Size);  
+    // data is not being used in this case!
+    logic [7:0] ReadData;
+    logic [7:0] rx_status;
+  
+    //Check for RX FCSErr flag
+    
+     ReadAddress(RXSC, rx_status);
+     assert(rx_status[2] != 0) $display("AAAAAAAAAAAAA");
+      else begin 
+        TbErrorCnt++;
+        $display("Error: FCSErr flag not set at time %0t!", $time);
+      end
+    
+    //Check that RXBuf is zero
+
+    for(int i = 0; i < Size; i++) begin
+     ReadAddress(RXBuf, ReadData); 
+     assert (ReadData == 0) 
+      else begin
+        TbErrorCnt++;
+        $display("Error: data in RXBuf is not zero"); 
+      end
+    end
+  endtask
+ 
+
+
+
 
   /****************************************************************************
    *                                                                          *
@@ -82,7 +184,10 @@ program testPr_hdlc(
     Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
     Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
-
+    Receive(126, 0, 1, 0, 0, 0, 0); //FCSerr
+    Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
+    Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
+    Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -248,6 +353,11 @@ program testPr_hdlc(
       VerifyOverflowReceive(ReceiveData, Size);
     else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
+    else if(Drop)
+      VerifyDropReceive(ReceiveData, Size);
+    else if(FCSerr)
+      VerifyFrameErrorReceive(ReceiveData, Size);
+
 
     #5000ns;
   endtask

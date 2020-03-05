@@ -36,8 +36,7 @@ module assertions_hdlc (
    *******************************************/
 
   sequence Rx_flag;
- 	!Rx ##1 Rx[*6] ##1 !Rx;	//One low, six high, one low	
- 	//!Rx ##1 Rx ##1 Rx ##1 Rx ##1 Rx ##1 Rx ##1 Rx ##1 !Rx;	//Temporary,clean up when possible
+ 	!Rx ##1 Rx[*6] ##1 !Rx;	
   endsequence
 
   // Check if flag sequence is detected
@@ -45,9 +44,8 @@ module assertions_hdlc (
     @(posedge Clk) Rx_flag |-> ##2 Rx_FlagDetect;
   endproperty
 
-  RX_FlagDetect_Assert : assert property (RX_FlagDetect) begin
-    $display("PASS: Flag detect at time %0t", $time);
-  end else begin 
+  RX_FlagDetect_Assert : assert property (RX_FlagDetect) 
+   else begin 
     $error("Flag sequence did not generate FlagDetect at time %0t", $time); 
     ErrCntAssertions++; 
   end
@@ -61,9 +59,8 @@ module assertions_hdlc (
  	@(posedge Clk) Rx_AbortDetect && Rx_ValidFrame |=> Rx_AbortSignal;  
   endproperty
 
-  RX_AbortSignal_Assert : assert property (RX_AbortSignal) begin
-    $display("PASS: Abort signal at time %0t", $time);
-  end else begin 
+  RX_AbortSignal_Assert : assert property (RX_AbortSignal) 
+   else begin 
     $error("AbortSignal did not go high after AbortDetect during validframe at time %0t", $time); 
     ErrCntAssertions++; 
   end
