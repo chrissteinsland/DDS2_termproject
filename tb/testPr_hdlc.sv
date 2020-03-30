@@ -346,8 +346,8 @@ program testPr_hdlc(
       ReadAddress(RXSC, rx_status);
 	  $display("rx_status is: %d", rx_status);
       dropmask = (8'b00000010 | rx_status);
-      $display("Dropmask is: %d", dropmask);
-	  WriteAddress(RXSC, dropmask);
+      //$display("Dropmask is: %d", dropmask);
+	  WriteAddress(RXSC, 2);
     end	
 
     if(Overflow) begin
