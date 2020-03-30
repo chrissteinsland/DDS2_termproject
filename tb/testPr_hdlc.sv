@@ -113,6 +113,7 @@ program testPr_hdlc(
     logic [7:0] rx_status;
   
    
+	/*		NOTE: Assignment does not ask to check this
 	//Check for RX Drop flag
      ReadAddress(RXSC, rx_status);
 	 $display("rx_status = %d", rx_status);
@@ -121,6 +122,7 @@ program testPr_hdlc(
         TbErrorCnt++;
         $display("Error: Drop flag not set at time %0t! (rx_status = %d)", $time, rx_status);
       end
+	*/
 
     //Check that RXBuf is zero
 
@@ -129,7 +131,7 @@ program testPr_hdlc(
      assert (ReadData == 0) 
       else begin
         TbErrorCnt++;
-        $display("Error: data in RXBuf is not zero, when testing for drop"); 
+        $display("Error: data in RXBuf is not zero"); 
       end
     end
   endtask
