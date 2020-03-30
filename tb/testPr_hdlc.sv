@@ -108,10 +108,8 @@ program testPr_hdlc(
   endtask
   
   task VerifyDropReceive(logic [127:0][7:0] data, int Size);  
-    // data is not being used in this case!
     logic [7:0] ReadData;
     logic [7:0] rx_status;
-  
    
 	/*		NOTE: Assignment does not ask to check this
 	//Check for RX Drop flag
@@ -125,7 +123,6 @@ program testPr_hdlc(
 	*/
 
     //Check that RXBuf is zero
-
     for(int i = 0; i < Size; i++) begin
      ReadAddress(RXBuf, ReadData); 
      assert (ReadData == 0) 
@@ -137,12 +134,10 @@ program testPr_hdlc(
   endtask
 
    task VerifyFrameErrorReceive(logic [127:0][7:0] data, int Size);  
-    // data is not being used in this case!
     logic [7:0] ReadData;
     logic [7:0] rx_status;
   
     //Check for RX FCSErr flag
-    
      ReadAddress(RXSC, rx_status);
      assert(rx_status[2] != 0)
       else begin 
@@ -151,13 +146,12 @@ program testPr_hdlc(
       end
     
     //Check that RXBuf is zero
-
     for(int i = 0; i < Size; i++) begin
      ReadAddress(RXBuf, ReadData); 
      assert (ReadData == 0) 
       else begin
         TbErrorCnt++;
-        $display("Error: data in RXBuf is not zeroi, when testing for frame error"); 
+        $display("Error: data in RXBuf is not zero"); 
       end
     end
   endtask
@@ -335,20 +329,14 @@ program testPr_hdlc(
 
 
     if(FCSerr) begin
-     /*     Proposed pseudocode for testing FCS
-        Generate some random bytes
-        Randomize placement in data
-        Replace the good bytes with bad bytes
-     */
+      for (int i=10,i<15,i++) begin
+	  	ReceiveData[i] = $urandom;
+	  end
     end
 
     if(Drop) begin
       logic [7:0] rx_status;
       logic [7:0] dropmask;
-      ReadAddress(RXSC, rx_status);
-	  $display("rx_status is: %d", rx_status);
-      dropmask = (8'b00000010 | rx_status);
-      //$display("Dropmask is: %d", dropmask);
 	  WriteAddress(RXSC, 2);
     end	
 
@@ -375,10 +363,10 @@ program testPr_hdlc(
       VerifyAbortReceive(ReceiveData, Size);
     else if(Overflow)
       VerifyOverflowReceive(ReceiveData, Size);
-     else if(Drop)
+    else if(Drop)
       VerifyDropReceive(ReceiveData, Size);
-   /* else if(FCSerr)
-      VerifyFrameErrorReceive(ReceiveData, Size);*/
+    else if(FCSerr)
+      VerifyFrameErrorReceive(ReceiveData, Size);
 	else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
 
