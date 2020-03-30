@@ -326,7 +326,7 @@ program testPr_hdlc(
     InsertFlagOrAbort(1);
 
     if(FCSerr) begin	//Here we "corrupt" the data to force a FCS error
-      for (int i=10,i<15,i++) begin
+      for (int i=10;i<15;i++) begin
 	  	ReceiveData[i] = $urandom;
 	  end
     end
