@@ -139,7 +139,7 @@ program testPr_hdlc(
   
     //Check for RX FCSErr flag
      ReadAddress(RXSC, rx_status);
-     assert(rx_status[2] != 0)
+     assert(rx_status[2] != 0) 
       else begin 
         TbErrorCnt++;
         $display("Error: FCSErr flag not set at time %0t!", $time);
@@ -327,8 +327,8 @@ program testPr_hdlc(
 
     if(FCSerr) begin	//Here we "corrupt" the data to force a FCS error
       for (int i=10;i<15;i++) begin
-	  	ReceiveData[i] = $urandom;
-	  end
+        ReceiveData[i] = $urandom;
+      end
     end
 
     MakeRxStimulus(ReceiveData, Size + 2);
