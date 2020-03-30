@@ -334,8 +334,6 @@ program testPr_hdlc(
     MakeRxStimulus(ReceiveData, Size + 2);
 
     if(Drop) begin
-      logic [7:0] rx_status;
-      logic [7:0] dropmask;
 	  WriteAddress(RXSC, 2);
     end	
 
