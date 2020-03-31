@@ -76,7 +76,7 @@ module assertions_hdlc (
   //Idle pattern generation and checking (1111_1111 when not operating)
 
   property idle_pattern;
- 	@(posedge Clk) Rx[*8] |-> (	!Rx_ValidFrame && Rx_Ready && !Rx_AbortSignal && 
+ 	@(posedge Clk) Rx[*8] |-> (	!Rx_ValidFrame && !Rx_Ready && !Rx_AbortSignal && 
 								!Rx_WrBuff && !Rx_Overflow && !Rx_FCSerr) ##1 $fell(Rx_EoF); 
   endproperty
 
