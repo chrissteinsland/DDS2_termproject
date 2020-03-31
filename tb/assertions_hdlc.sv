@@ -83,4 +83,17 @@ module assertions_hdlc (
     ErrCntAssertions++; 
    end
 
+  // Let's test this shit
+  property test_property;
+ 	@(posedge Clk) !TxEN |-> RxEN;
+  endproperty
+
+  test_property_assert: assert property (test_property) 
+    $display("The properties are tested");
+   else begin 
+    $display("The properties are tested");
+    ErrCntAssertions++; 
+   end
+
+
 endmodule
