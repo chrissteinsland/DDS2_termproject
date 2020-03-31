@@ -48,7 +48,7 @@ module test_hdlc ();
   assign uin_hdlc.Tx_NewByte         = u_dut.Tx_NewByte;
   assign uin_hdlc.Tx_FCSDone         = u_dut.Tx_FCSDone;
   assign uin_hdlc.Tx_Data            = u_dut.Tx_Data;
-  assign uin_hdlc.Tx_Done            = u_dut.Tx_Done;
+//  assign uin_hdlc.Tx_Done            = u_dut.Tx_Done;	//Commented to remove warning
   assign uin_hdlc.Tx_Full            = u_dut.Tx_Full;
   assign uin_hdlc.Tx_DataAvail       = u_dut.Tx_DataAvail;
   assign uin_hdlc.Tx_FrameSize       = u_dut.Tx_FrameSize;
