@@ -19,8 +19,7 @@ module bind_hdlc ();
     .Rx_WrBuff        (uin_hdlc.Rx_WrBuff), 
 	.RxEN			  (uin_hdlc.RxEN),
 	.TxEN			  (uin_hdlc.TxEN),
-	.DataOut		  (uin_hdlc.DataOut),
-
+	.DataOut		  (uin_hdlc.DataOut)
 );
 
 endmodule
