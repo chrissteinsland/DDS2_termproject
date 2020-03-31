@@ -76,6 +76,11 @@ module test_hdlc ();
     .Rx          (uin_hdlc.Rx),
     .RxEN        (uin_hdlc.RxEN),
     .Rx_Ready    (uin_hdlc.Rx_Ready)
+	// TX
+    .Tx          (uin_hdlc.Tx),
+    .TxEN        (uin_hdlc.TxEN),
+    .Tx_Ready    (uin_hdlc.Tx_Ready)
+	
 );
 
   //Test program
