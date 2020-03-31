@@ -83,9 +83,9 @@ module assertions_hdlc (
     ErrCntAssertions++; 
    end
 
-  // Let's test this shit
+  // Let's test this file
   property test_property;
- 	@(posedge Clk) !TxEN |-> RxEN;
+ 	@(posedge Clk) 0;
   endproperty
 
   test_property_assert: assert property (test_property) 
