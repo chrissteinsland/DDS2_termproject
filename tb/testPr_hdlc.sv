@@ -17,7 +17,6 @@
    - A ReadAddress() task is provided, and addresses are documentet in the 
      HDLC Module Design Description
 */
-
 program testPr_hdlc(
   in_hdlc uin_hdlc
 );
@@ -187,6 +186,9 @@ program testPr_hdlc(
     Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
+
+		Transmit(13,0);									//Normal
+
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -364,10 +366,36 @@ program testPr_hdlc(
       VerifyDropReceive(ReceiveData, Size);
     else if(FCSerr)
       VerifyFrameErrorReceive(ReceiveData, Size);
-	else if(!SkipRead)
+		else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
 
     #5000ns;
+  endtask
+
+  task SendToTxBuffer();
+		logic [7:0] message = $urandom;
+		WriteAddress(TXBuf, message);
+	endtask
+	
+
+  task Transmit(int Size, int Abort);
+	  string msg;
+    if(Abort)
+      msg = "- Abort";
+    else
+      msg = "- Normal";
+    $display("*************************************************************");
+    $display("%t - Starting task Transmit %s", $time, msg);
+    $display("*************************************************************");
+
+		for(int i=0; i<Size; i++) begin
+			SendToTxBuffer();
+		end
+		if(Abort) 
+			WriteAddress(TXSC, 0x04);
+		else
+			WriteAddress(TXSC, 0x02);
+		end
   endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
