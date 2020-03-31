@@ -27,7 +27,9 @@ module assertions_hdlc (
   input  logic Rx_WrBuff,
   input	 logic TxEN,
   input  logic RxEN,
-  input  logic [31:0] DataOut
+  input  logic Rx_EoF,
+  input  logic Rx_FCSerr,
+  input  logic Rx_Ready
 );
 
   initial begin
