@@ -85,7 +85,6 @@ module assertions_hdlc (
 			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)//, $display("Error frame received")
 		else
 			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready);
-		end
   endproperty
 
   RX_SC_correct_Assert : assert property (RX_SC_correct) //$display("RX status control register correct");
