@@ -74,11 +74,10 @@ module assertions_hdlc (
   //Idle pattern generation and checking (1111_1111 when not operating)
 
   property idle_pattern;
- 	@(posedge Clk) Rx[*8] |-> $stable(DataOut);  
+ 	@(posedge Clk) Rx[*8] |-> $stable(DataOut[*0:100]) ##0 $fell(Rx);  
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
-    $display("Idle pattern works at time %0t", $time);
    else begin 
     $error("Idle pattern not valid at time %0t", $time); 
     ErrCntAssertions++; 
