@@ -78,13 +78,13 @@ module assertions_hdlc (
   property RX_SC_correct;
  	@(posedge Clk) disable iff(!Rst) $rose(Rx_EoF) |->
 		if(Rx_AbortSignal)
-			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)// $display("Aborted frame received")	
+			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)//, $display("Aborted frame received")	
 		else if(Rx_Overflow)
-			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)// $display("Overflowed frame received")
+			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)//, $display("Overflowed frame received")
 		else if(Rx_FrameError)
-			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)// $display("Error frame received")
+			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)//, $display("Error frame received")
 		else
-			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready)// $display("Normal frame received");
+			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready);
 		end
   endproperty
 
