@@ -395,7 +395,6 @@ program testPr_hdlc(
 			WriteAddress(TXSC, 0x04);
 		else
 			WriteAddress(TXSC, 0x02);
-		end
   endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
