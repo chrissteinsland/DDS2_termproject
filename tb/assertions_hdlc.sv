@@ -28,7 +28,9 @@ module assertions_hdlc (
   input  logic Rx_FrameError,
   input  logic Rx_FCSen,
   input  logic Rx_Drop,
-  input  logic Rx_Ready
+  input  logic Rx_Ready,
+  input  logic Rx_EoF 
+
 );
 
   initial begin
