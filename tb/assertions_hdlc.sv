@@ -24,7 +24,11 @@ module assertions_hdlc (
   input  logic Rx_AbortDetect,
   input  logic Rx_AbortSignal,
   input  logic Rx_Overflow,
-  input  logic Rx_WrBuff
+  input  logic Rx_WrBuff,
+  input  logic Rx_FrameError,
+  input  logic Rx_FCSen,
+  input  logic Rx_Drop,
+  input  logic Rx_Ready
 );
 
   initial begin
@@ -65,4 +69,26 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
+  /*********************************************************
+   *  Verify correct Rx status/control after receivin frame*
+   *********************************************************/
+
+  // Correct bits set in the RX status/control register after receiving frame. All bits (Overflow, abort and so on) should be correct
+
+  property RX_SC_correct;
+ 	@(posedge Clk) disable iff(!Rst) $rose(Rx_EoF) |->
+		if(Rx_AbortSignal)
+			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)	
+		else if(Rx_Overflow)
+			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready)	
+		else if(Rx_FrameError)
+			(!Rx_Overflow ##0 Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)	
+		end
+  endproperty
+
+  RX_SC_correct_Assert : assert property (RX_SC_correct) $display("RX status control register correct");
+   else begin 
+    $error("RX status control register is not correct at time %0t", $time); 
+    ErrCntAssertions++; 
+   end
 endmodule
