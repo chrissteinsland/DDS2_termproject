@@ -373,7 +373,8 @@ program testPr_hdlc(
   endtask
 
   task SendToTxBuffer();
-		logic [7:0] message = $urandom;
+		logic [7:0] message;
+		message = $urandom;
 		WriteAddress(TXBuf, message);
 	endtask
 	
