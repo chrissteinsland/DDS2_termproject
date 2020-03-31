@@ -389,9 +389,13 @@ program testPr_hdlc(
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
-		for(int i=0; i<Size; i++) begin
+		/*for(int i=0; i<Size; i++) begin
 			SendToTxBuffer();
-		end
+		end*/			
+		WriteAddress(TXBuf, 'h13);
+		WriteAddress(TXBuf, 'h71);
+		WriteAddress(TXBuf, 'h44);
+		
 		if(Abort) 
 			WriteAddress(TXSC, 04);
 		else
