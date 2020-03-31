@@ -74,7 +74,7 @@ module assertions_hdlc (
   //Idle pattern generation and checking (1111_1111 when not operating)
 
   property idle_pattern;
- 	@(posedge Clk) Rx[*8] |-> $stable(DataOut)[*0:100] ##0 $fell(Rx);  
+ 	@(posedge Clk) Rx[*8] |-> $stable(DataOut)[*0:10000] ##0 $fell(Rx);  
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
