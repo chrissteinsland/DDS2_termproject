@@ -80,7 +80,7 @@ module assertions_hdlc (
 		if(Rx_AbortSignal)
 			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)//, $display("Aborted frame received")	
 		else if(Rx_Overflow)
-			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)//, $display("Overflowed frame received")
+			(Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)//, $display("Overflowed frame received")
 		else if(Rx_FrameError)
 			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)//, $display("Error frame received")
 		else
