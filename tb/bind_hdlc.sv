@@ -16,7 +16,12 @@ module bind_hdlc ();
     .Rx_AbortDetect   (uin_hdlc.Rx_AbortDetect),
     .Rx_AbortSignal   (uin_hdlc.Rx_AbortSignal),
     .Rx_Overflow      (uin_hdlc.Rx_Overflow),
-    .Rx_WrBuff        (uin_hdlc.Rx_WrBuff) 
+    .Rx_WrBuff        (uin_hdlc.Rx_WrBuff), 
+    .Rx_EoF     	  (uin_hdlc.Rx_EoF),
+    .Rx_Ready      	  (uin_hdlc.Rx_Ready),
+    .Rx_Drop       	  (uin_hdlc.Rx_Drop),
+    .Rx_FCSen     	  (uin_hdlc.Rx_FCSen),
+    .Rx_FrameError    (uin_hdlc.Rx_FrameError)
 );
 
 endmodule
