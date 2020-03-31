@@ -72,16 +72,8 @@ module assertions_hdlc (
    ********************************************/
   //Idle pattern generation and checking (1111_1111 when not operating)
 
-  sequence Rx_idle;
- 	!RxEN |-> Rx[*8];  
-  endsequence
-
-  sequence Tx_idle;
- 	!TxEN |-> Tx[*8];  
-  endsequence
-
   property idle_pattern;
- 	@(posedge Clk) Rx_idle || Tx_idle;  
+ 	@(posedge Clk) RxEN! |-> Rx[*8];  
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
