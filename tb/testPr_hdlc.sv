@@ -392,9 +392,9 @@ program testPr_hdlc(
 			SendToTxBuffer();
 		end
 		if(Abort) 
-			WriteAddress(TXSC, 0x04);
+			WriteAddress(TXSC, 04);
 		else
-			WriteAddress(TXSC, 0x02);
+			WriteAddress(TXSC, 02);
   endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
