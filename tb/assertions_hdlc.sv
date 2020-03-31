@@ -26,7 +26,8 @@ module assertions_hdlc (
   input  logic Rx_Overflow,
   input  logic Rx_WrBuff,
   input	 logic TxEN,
-  input  logic RxEN
+  input  logic RxEN,
+  input  logic [31:0] DataOut
 );
 
   initial begin
@@ -73,7 +74,7 @@ module assertions_hdlc (
   //Idle pattern generation and checking (1111_1111 when not operating)
 
   property idle_pattern;
- 	@(posedge Clk) !RxEN |-> Rx[*8];  
+ 	@(posedge Clk) Rx[*8] |-> $stable(DataOut);  
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
