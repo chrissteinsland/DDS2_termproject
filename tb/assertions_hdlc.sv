@@ -80,16 +80,16 @@ module assertions_hdlc (
   property RX_SC_correct;
  	@(posedge Clk) disable iff(!Rst) $rose(Rx_EoF) |->
 		if(Rx_AbortSignal)
-			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)//, $display("Aborted frame received")	
+			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready)
 		else if(Rx_Overflow)
-			(Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)//, $display("Overflowed frame received")
+			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)
 		else if(Rx_FrameError)
-			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)//, $display("Error frame received")
+			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)
 		else
 			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready);
   endproperty
 
-  RX_SC_correct_Assert : assert property (RX_SC_correct) //$display("RX status control register correct");
+  RX_SC_correct_Assert : assert property (RX_SC_correct) $display("RX status control register correct");
    else begin 
     $error("RX status control register is not correct at time %0t", $time); 
     ErrCntAssertions++; 
