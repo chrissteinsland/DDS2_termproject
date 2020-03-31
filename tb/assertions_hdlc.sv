@@ -75,14 +75,14 @@ module assertions_hdlc (
    *  Verify correct Rx status/control after receivin frame*
    *********************************************************/
 
-  // Correct bits set in the RX status/control register after receiving frame. All bits (Overflow, abort and so on) should be correct
+  // Assertion 3 - Correct bits set in the RX status/control register after receiving frame
 
   property RX_SC_correct;
  	@(posedge Clk) disable iff(!Rst) $rose(Rx_EoF) |->
 		if(Rx_AbortSignal)
-			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready)
+			(!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##1 !Rx_Ready)
 		else if(Rx_Overflow)
-			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 !Rx_Ready)
+			(Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready)
 		else if(Rx_FrameError)
 			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)
 		else
