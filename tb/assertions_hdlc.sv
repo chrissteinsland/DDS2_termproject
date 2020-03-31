@@ -77,6 +77,7 @@ module assertions_hdlc (
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
+    $display("Idle pattern works");
    else begin 
     $error("Idle pattern not valid at time %0t", $time); 
     ErrCntAssertions++; 
