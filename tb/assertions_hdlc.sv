@@ -76,7 +76,7 @@ module assertions_hdlc (
  	@(posedge Clk) !TxEN && !RxEN |-> Rx[*8];  
   endproperty
 
-  idle_pattern_assert: assert property (idle_patern) 
+  idle_pattern_assert: assert property (idle_pattern) 
    else begin 
     $error("Idle pattern not valid at time %0t", $time); 
     ErrCntAssertions++; 
