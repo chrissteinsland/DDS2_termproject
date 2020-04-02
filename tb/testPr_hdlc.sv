@@ -380,6 +380,7 @@ program testPr_hdlc(
 	
 
   task Transmit(int Size, int Abort);
+		logic [7:0] tx_sc;
 	  string msg;
     if(Abort)
       msg = "- Abort";
@@ -411,7 +412,6 @@ program testPr_hdlc(
 		else
 			$display("Writing to Tx status/control");
 			WriteAddress(TXSC, 02);
-			logic [7:0] tx_sc;
 			ReadAddress(tx_sc, TXSC);
 			$display("Tx status/control is: %d", tx_sc);
 		
