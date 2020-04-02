@@ -400,6 +400,7 @@ program testPr_hdlc(
 		WriteAddress(1, 'h13);
 		WriteAddress(1, 'h71);
 		WriteAddress(1, 'h44);
+		#1000ns;
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
@@ -409,7 +410,8 @@ program testPr_hdlc(
 			WriteAddress(TXSC, 04);
 		else
 			WriteAddress(TXSC, 02);
-
+		
+		#1000ns;
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
