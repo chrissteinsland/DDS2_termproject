@@ -400,9 +400,9 @@ program testPr_hdlc(
 		WriteAddress(1, 'h13);
 		WriteAddress(1, 'h71);
 		WriteAddress(1, 'h44);
-		$display("Buffer contains: %d", DataArray[1]);
-		$display("Buffer contains: %d", DataArray[2]);
-		$display("Buffer contains: %d", DataArray[3]);
+		$display("Buffer contains: %d", Tx_DataArray[1]);
+		$display("Buffer contains: %d", Tx_DataArray[2]);
+		$display("Buffer contains: %d", Tx_DataArray[3]);
 
 		if(Abort) 
 			WriteAddress(TXSC, 04);
