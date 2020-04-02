@@ -392,14 +392,14 @@ program testPr_hdlc(
 		/*for(int i=0; i<Size; i++) begin
 			SendToTxBuffer();
 		end			
-		WriteAddress(TXBuf, 'h13);
-		WriteAddress(TXBuf, 'h71);
-		WriteAddress(TXBuf, 'h44);
-		*/
-
 		WriteAddress(1, 'h13);
 		WriteAddress(1, 'h71);
 		WriteAddress(1, 'h44);
+		*/
+		WriteAddress(TXBuf, 'h13);
+		WriteAddress(TXBuf, 'h71);
+		WriteAddress(TXBuf, 'h44);
+
 		#1000ns;
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
@@ -409,7 +409,11 @@ program testPr_hdlc(
 		if(Abort) 
 			WriteAddress(TXSC, 04);
 		else
+			$display("Writing to Tx status/control");
 			WriteAddress(TXSC, 02);
+			logic [7:0] tx_sc;
+			ReadAddress(tx_sc, TXSC);
+			$display("Tx status/control is: %d", tx_sc);
 		
 		#1000ns;
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
