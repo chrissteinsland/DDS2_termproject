@@ -391,11 +391,16 @@ program testPr_hdlc(
 
 		/*for(int i=0; i<Size; i++) begin
 			SendToTxBuffer();
-		end*/			
+		end			
 		WriteAddress(TXBuf, 'h13);
 		WriteAddress(TXBuf, 'h71);
 		WriteAddress(TXBuf, 'h44);
-		
+		*/
+
+		WriteAddress(1, 'h13);
+		WriteAddress(1, 'h71);
+		WriteAddress(1, 'h44);
+
 		if(Abort) 
 			WriteAddress(TXSC, 04);
 		else
