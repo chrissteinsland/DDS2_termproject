@@ -400,6 +400,7 @@ program testPr_hdlc(
 		WriteAddress(1, 'h13);
 		WriteAddress(1, 'h71);
 		WriteAddress(1, 'h44);
+		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[3]);
@@ -408,7 +409,13 @@ program testPr_hdlc(
 			WriteAddress(TXSC, 04);
 		else
 			WriteAddress(TXSC, 02);
-  endtask
+
+		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
+		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
+		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
+		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[3]);
+  
+	endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
     logic [23:0] CheckReg;
