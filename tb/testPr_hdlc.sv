@@ -412,7 +412,7 @@ program testPr_hdlc(
 		else
 			$display("Writing to Tx status/control");
 			WriteAddress(TXSC, 02);
-			ReadAddress(tx_sc, TXSC);
+			ReadAddress(TXSC, tx_sc);
 			$display("Tx status/control is: %d", tx_sc);
 		
 		#1000ns;
