@@ -133,14 +133,8 @@ program testPr_hdlc(
         end 
 
     //Check that Rx data is correct
-    for(int i = 0; i < Size; i++) begin
-      ReadAddress(RXBuf, ReadData);
-      assert(ReadData == data[i])
-        else begin
-          TbErrorCnt++;
-          $display("Error: Data in RXBuf is not equal to RX_data");
-        end
-    end
+    CheckDataEqual(data, Size);
+    
   endtask
 
   // VerifyOverflowReceive should verify correct value in the Rx status/control
