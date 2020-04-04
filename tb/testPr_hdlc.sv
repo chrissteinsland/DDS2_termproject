@@ -29,6 +29,18 @@ program testPr_hdlc(
    *                               Student code                               *
    *                                                                          *
    ****************************************************************************/
+  // Check to see if data is equal in rx buffer
+  task CheckDataEqual(logic [127:0][7:0] data, int Size);
+    for(int i = 0; i < Size; i++) begin
+      ReadAddress(RXBuf, ReadData);
+      assert(ReadData == data[i])
+        else begin
+          TbErrorCnt++;
+          $display("Error: Data in RXBuf is not equal to RX_data");
+        end
+    end
+  endtask;
+
   // Test RX buffer for normal operation
   task TestRxBuffer(int Size, int Mismatch);
     logic [127:0][7:0] ReceiveData;
