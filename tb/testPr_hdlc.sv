@@ -360,7 +360,8 @@ program testPr_hdlc(
   endtask
 
 	task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
-		for(int i=0;i<Size;@(posedge uin_hdlc.Clk) i++) begin
+		for(int i=0;i<Size;i++) begin
+			wait(posedge uin_hdlc.Clk);
 			bit Skip;
 			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
