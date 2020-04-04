@@ -413,7 +413,7 @@ program testPr_hdlc(
       WriteAddress(TXSC, 04);
     else begin
       WriteAddress(0, 2);
-			Verify_DataOutBuff(messages, Size);
+		//	Verify_DataOutBuff(messages, Size);
 		end
 
 		#5000ns;
