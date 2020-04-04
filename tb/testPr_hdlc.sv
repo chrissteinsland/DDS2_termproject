@@ -110,16 +110,6 @@ program testPr_hdlc(
     logic [7:0] ReadData;
     logic [7:0] rx_status;
    
-	/*		NOTE: Assignment does not ask to check this
-	//Check for RX Drop flag
-     ReadAddress(RXSC, rx_status);
-	 $display("rx_status = %d", rx_status);
-     assert(rx_status[1] != 0)
-      else begin 
-        TbErrorCnt++;
-        $display("Error: Drop flag not set at time %0t! (rx_status = %d)", $time, rx_status);
-      end
-	*/
 
     //Check that RXBuf is zero
     for(int i = 0; i < Size; i++) begin
@@ -155,10 +145,6 @@ program testPr_hdlc(
     end
   endtask
  
-
-
-
-
   /****************************************************************************
    *                                                                          *
    *                             Simulation code                              *
@@ -177,21 +163,22 @@ program testPr_hdlc(
     Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
     Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
     Receive( 45, 0, 0, 0, 0, 0, 0); //Normal
-    Receive(126, 0, 0, 0, 0, 0, 0); //Normal
-    Receive(122, 1, 0, 0, 0, 0, 0); //Abort
-    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
-    Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
-    Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
-    Receive(126, 0, 1, 0, 0, 0, 0); //FCSerr
-    Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
-    Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
-    Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
+    Transmit(13,0);                 //Normal
+    //Receive(126, 0, 0, 0, 0, 0, 0); //Normal
+    //Receive(122, 1, 0, 0, 0, 0, 0); //Abort
+    //Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+    //Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
+    //Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
+    //Receive(126, 0, 1, 0, 0, 0, 0); //FCSerr
+    //Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
+    //Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
+    //Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
 
-		Transmit(13,0);									//Normal
 
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
+    #100us;
     $stop;
   end
 
@@ -380,8 +367,7 @@ program testPr_hdlc(
 	
 
   task Transmit(int Size, int Abort);
-		logic [7:0] tx_sc;
-	  string msg;
+    string msg;
     if(Abort)
       msg = "- Abort";
     else
@@ -390,36 +376,22 @@ program testPr_hdlc(
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
-		/*for(int i=0; i<Size; i++) begin
-			SendToTxBuffer();
-		end			
-		WriteAddress(1, 'h13);
-		WriteAddress(1, 'h71);
-		WriteAddress(1, 'h44);
-		*/
-		WriteAddress(TXBuf, 'h13);
-		WriteAddress(TXBuf, 'h71);
-		WriteAddress(TXBuf, 'h44);
+    /*for(int i=0; i<Size; i++) begin
+      SendToTxBuffer();
+    end*/
+    WriteAddress(TXBuf, 'h13);
+    WriteAddress(TXBuf, 'h71);
+    WriteAddress(TXBuf, 'h44);
 
-		#1000ns;
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
-		#100ns;
-		if(Abort) 
-			WriteAddress(TXSC, 04);
-		else
-			$display("Writing to Tx status/control");
-			WriteAddress(0, 2);
-			ReadAddress(0, tx_sc);
-			$display("Tx status/control is: %d", tx_sc);
+    #1000ns;
+
+    if(Abort) 
+      WriteAddress(TXSC, 04);
+    else
+      WriteAddress(0, 2);
 		
-		#1000ns;
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
-  
-	endtask
+    #1000ns;
+  endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
     logic [23:0] CheckReg;
