@@ -150,8 +150,6 @@ program testPr_hdlc(
 
     wait(uin_hdlc.Rx_Ready);
 
-    // INSERT CODE HERE
-
     // Check RX status/control
     ReadAddress(RXSC, rx_status);
     assert(rx_status[4] == 0)
@@ -160,7 +158,8 @@ program testPr_hdlc(
         $display("Error: RX overflow! %d");
       end 
     
-	// VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+    // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+    CheckDataEqual(data, Size);
 
   endtask
   
