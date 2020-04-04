@@ -406,7 +406,7 @@ program testPr_hdlc(
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[3]);
-
+		#100ns;
 		if(Abort) 
 			WriteAddress(TXSC, 04);
 		else
