@@ -361,11 +361,12 @@ program testPr_hdlc(
 
 	task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
 		for(int i=0;i<Size;i++) begin
-			wait(posedge uin_hdlc.Clk);
 			bit Skip;
+			$display("Skip: %d", Skip);
 			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
 					Skip = 1;
+					$display("Skip: %d", Skip);
 					$display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
 					$display("DataOutBuffer is %d, while it should be %d", uin_hdlc.Tx_DataOutBuff, Data[i]);
         	TbErrorCnt++;
