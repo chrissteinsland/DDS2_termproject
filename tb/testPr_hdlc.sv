@@ -156,7 +156,7 @@ program testPr_hdlc(
     assert(rx_status[4] == 0)
       else begin
         TbErrorCnt++; 
-        $display("Error: RX overflow! %d");
+        $display("Error: RX overflow!");
       end 
     
     // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
