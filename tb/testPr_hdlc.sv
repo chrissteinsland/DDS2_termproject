@@ -365,7 +365,8 @@ program testPr_hdlc(
 			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
 					Skip = 1;
-					$error("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
+					$display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
+					$display("DataOutBuffer is %d, while it should be %d", uin_hdlc.Tx_DataOutBuff, Data[i]);
         	TbErrorCnt++;
 				end
 			while(uin_hdlc.Tx_DataOutBuff == Data[i] || Skip);
