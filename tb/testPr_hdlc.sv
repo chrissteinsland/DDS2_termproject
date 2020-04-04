@@ -360,8 +360,9 @@ program testPr_hdlc(
   endtask
 
 	task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
+		bit Skip;
 		for(int i=0;i<Size;i++) begin
-			bit Skip;
+			Skip = 0;
 			$display("Skip: %d", Skip);
 			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
