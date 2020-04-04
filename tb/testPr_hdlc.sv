@@ -362,7 +362,7 @@ program testPr_hdlc(
 	task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
 		for(int i=0;i<Size;i++) begin
 			bit Skip;
-			assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
+			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
 					Skip = 1;
 					$error("Data in Output buffer is not the same as what is being written to the controller at time ½0t", $time);
