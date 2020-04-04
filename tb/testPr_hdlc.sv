@@ -30,7 +30,7 @@ program testPr_hdlc(
    *                                                                          *
    ****************************************************************************/
   // Check to see if data is equal in rx buffer
-  task CheckDataEqual(logic [127:0][7:0] data, int Size);
+  task RxCheckDataEqual(logic [127:0][7:0] data, int Size);
     logic [7:0] ReadData;
     for(int i = 0; i < Size; i++) begin
       ReadAddress(RXBuf, ReadData);
@@ -133,7 +133,7 @@ program testPr_hdlc(
         end 
 
     //Check that Rx data is correct
-    CheckDataEqual(data, Size);
+    RxCheckDataEqual(data, Size);
     
   endtask
 
@@ -154,7 +154,7 @@ program testPr_hdlc(
       end 
     
     // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
-    CheckDataEqual(data, Size);
+    RxCheckDataEqual(data, Size);
 
   endtask
   
