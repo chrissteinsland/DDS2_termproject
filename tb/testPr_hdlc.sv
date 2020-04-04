@@ -29,10 +29,8 @@ program testPr_hdlc(
    *                               Student code                               *
    *                                                                          *
    ****************************************************************************/
-  // Test comment to see commit for remote server
+  // Test RX buffer for normal operation
   task TestRxBuffer(int Size, int Mismatch);
-    // Generate data
-    // FCS
     logic [127:0][7:0] ReceiveData;
     logic       [15:0] FCSBytes;
 
@@ -69,7 +67,6 @@ program testPr_hdlc(
 
     // Create a mismatch case
     if (Mismatch) begin
-        //int wrong_element = $urandom % Size;
         ReceiveData[2]++;
     end
 
