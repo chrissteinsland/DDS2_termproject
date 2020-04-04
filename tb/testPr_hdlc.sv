@@ -405,21 +405,19 @@ program testPr_hdlc(
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[3]);
 		#100ns;
 		if(Abort) 
 			WriteAddress(TXSC, 04);
 		else
 			$display("Writing to Tx status/control");
-			WriteAddress(TXSC, 02);
-			ReadAddress(TXSC, tx_sc);
+			WriteAddress(0, 2);
+			ReadAddress(0, tx_sc);
 			$display("Tx status/control is: %d", tx_sc);
 		
 		#1000ns;
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[0]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[1]);
 		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[2]);
-		$display("Buffer contains: %d", uin_hdlc.Tx_DataArray[3]);
   
 	endtask
 
