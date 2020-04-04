@@ -142,10 +142,10 @@ program testPr_hdlc(
 
     // Check RX status/control
     ReadAddress(RXSC, rx_status);
-    assert(rx_status[4])
+    assert(rx_status[4] == 0)
       else begin
         TbErrorCnt++; 
-        $display("Error: rx_status is not correct! %d", rx_status);
+        $display("Error: RX overflow! %d");
       end 
     
 	// VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
@@ -412,8 +412,7 @@ program testPr_hdlc(
     else if(Overflow)
       VerifyOverflowReceive(ReceiveData, Size);
     else if(Drop)
-      //VerifyDropReceive(ReceiveData, Size);
-      VerifyNormalReceive(ReceiveData, Size); // remove later
+      VerifyDropReceive(ReceiveData, Size);
     else if(FCSerr)
       VerifyFrameErrorReceive(ReceiveData, Size);
 	else if(!SkipRead)
