@@ -359,15 +359,22 @@ program testPr_hdlc(
     #5000ns;
   endtask
 
-  task SendToTxBuffer();
-		logic [7:0] message;
-		message = $urandom;
-		WriteAddress(TXBuf, message);
+	task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
+		for(int i=0;i<Size;i++) begin
+			bit Skip;
+			assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
+				else begin
+					Skip = 1;
+					$error("Data in Output buffer is not correct");
+        	TbErrorCnt++;
+				end
+			while(uin_hdlc.Tx_DataOutBuff == Data[i] || Skip);
+		end
 	endtask
-	
 
   task Transmit(int Size, int Abort);
     string msg;
+		logic [127:0][7:0] messages;
     if(Abort)
       msg = "- Abort";
     else
@@ -376,12 +383,11 @@ program testPr_hdlc(
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
-    /*for(int i=0; i<Size; i++) begin
-      SendToTxBuffer();
-    end*/
-    WriteAddress(TXBuf, 'h13);
-    WriteAddress(TXBuf, 'h71);
-    WriteAddress(TXBuf, 'h44);
+    for(int i=0; i<Size; i++) begin
+			messages[i] = $urandom;
+			$display("%d", messages[i]);
+    	WriteAddress(TXBuf, messages[i]);
+    end
 
     #1000ns;
 
@@ -390,7 +396,8 @@ program testPr_hdlc(
     else
       WriteAddress(0, 2);
 		
-    #1000ns;
+
+		#5000ns;
   endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);

@@ -104,10 +104,10 @@ module assertions_hdlc (
    *  Verify correct TX output according to written TX buffer*
    ***********************************************************/
   // Assertion 4 - Correct TX output according to written TX buffer
+/*
   sequence Tx_flag;
  	!Tx ##1 Tx[*6] ##1 !Tx;	
   endsequence
- /* 
   function bit correct_tx(logic [127:0][7:0] Data, logic [7:0] Size);
     for(int i=0;i<Tx_FrameSize;i++) begin
       logic [7:0] Current_Byte;
@@ -118,36 +118,21 @@ module assertions_hdlc (
     end
     return 1;
   endfunction;
-*/
   property Tx_according_to_buffer;
     logic[127:0][7:0] Tx_DataArray_Saved;
-    @(posedge Clk) disable iff(!Rst) ($rose(Tx_ValidFrame), Tx_DataArray_Saved = Tx_DataArray) |-> 
-    //  TODO: Use a fucking for loop
-      ##10
-      Tx == Tx_DataArray_Saved[0][0] ##1
-      Tx == Tx_DataArray_Saved[0][1] ##1
-      Tx == Tx_DataArray_Saved[0][2] ##1
-      Tx == Tx_DataArray_Saved[0][3] ##1
-      Tx == Tx_DataArray_Saved[0][4] ##1
-      Tx == Tx_DataArray_Saved[0][5] ##1
-      Tx == Tx_DataArray_Saved[0][6] ##1
-      Tx == Tx_DataArray_Saved[0][7] ##1
-      Tx == Tx_DataArray_Saved[1][0] ##1
-      Tx == Tx_DataArray_Saved[1][1] ##1
-      Tx == Tx_DataArray_Saved[1][2] ##1
-      Tx == Tx_DataArray_Saved[1][3] ##1
-      Tx == Tx_DataArray_Saved[1][4] ##1
-      Tx == Tx_DataArray_Saved[1][5] ##1
-      Tx == Tx_DataArray_Saved[1][6] ##1
-      Tx == Tx_DataArray_Saved[1][7] ##1
-      Tx == Tx_DataArray_Saved[2][0] ##1
-      Tx == Tx_DataArray_Saved[2][1] ##1
-      Tx == Tx_DataArray_Saved[2][2] ##1
-      Tx == Tx_DataArray_Saved[2][3] ##1
-      Tx == Tx_DataArray_Saved[2][4] ##1
-      Tx == Tx_DataArray_Saved[2][5] ##1
-      Tx == Tx_DataArray_Saved[2][6] ##1
-      Tx == Tx_DataArray_Saved[2][7]; 
+		int loop_counter;
+		int size;
+    @(posedge Clk) disable iff(!Rst) ($rose(Tx_ValidFrame), 
+																				DataArray_Saved = Tx_DataArray,
+																				size = Tx_FrameSize) |-> 
+      Tx == DataArray_Saved[0][0] ##1
+      Tx == DataArray_Saved[0][1] ##1
+      Tx == DataArray_Saved[0][2] ##1
+      Tx == DataArray_Saved[0][3] ##1
+      Tx == DataArray_Saved[0][4] ##1
+      Tx == DataArray_Saved[0][5] ##1
+      Tx == DataArray_Saved[0][6] ##1
+      Tx == DataArray_Saved[0][7] ##1
   endproperty
 
   Tx_according_to_buffer_Assert : assert property (Tx_according_to_buffer) $display("Tx is correct according to Tx buffer");
@@ -155,4 +140,5 @@ module assertions_hdlc (
       $display("Tx is not correct according to Tx buffer at time ½0t", $time); 
       ErrCntAssertions++; 
     end
+*/
 endmodule
