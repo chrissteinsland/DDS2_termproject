@@ -29,6 +29,19 @@ program testPr_hdlc(
    *                               Student code                               *
    *                                                                          *
    ****************************************************************************/
+  // Check to see if data is equal in rx buffer
+  task CheckDataEqual(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    for(int i = 0; i < Size; i++) begin
+      ReadAddress(RXBuf, ReadData);
+      assert(ReadData == data[i])
+        else begin
+          TbErrorCnt++;
+          $display("Error: Data in RXBuf is not equal to RX_data");
+        end
+    end
+  endtask;
+
   // Test RX buffer for normal operation
   task TestRxBuffer(int Size, int Mismatch);
     logic [127:0][7:0] ReceiveData;
@@ -120,14 +133,8 @@ program testPr_hdlc(
         end 
 
     //Check that Rx data is correct
-    for(int i = 0; i < Size; i++) begin
-      ReadAddress(RXBuf, ReadData);
-      assert(ReadData == data[i])
-        else begin
-          TbErrorCnt++;
-          $display("Error: Data in RXBuf is not equal to RX_data");
-        end
-    end
+    CheckDataEqual(data, Size);
+    
   endtask
 
   // VerifyOverflowReceive should verify correct value in the Rx status/control
@@ -138,17 +145,16 @@ program testPr_hdlc(
 
     wait(uin_hdlc.Rx_Ready);
 
-    // INSERT CODE HERE
-
     // Check RX status/control
     ReadAddress(RXSC, rx_status);
-    assert(rx_status[4])
+    assert(rx_status[4] == 0)
       else begin
         TbErrorCnt++; 
-        $display("Error: rx_status is not correct! %d", rx_status);
+        $display("Error: RX overflow!");
       end 
     
-	// VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+    // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+    CheckDataEqual(data, Size);
 
   endtask
   
@@ -412,8 +418,7 @@ program testPr_hdlc(
     else if(Overflow)
       VerifyOverflowReceive(ReceiveData, Size);
     else if(Drop)
-      //VerifyDropReceive(ReceiveData, Size);
-      VerifyNormalReceive(ReceiveData, Size); // remove later
+      VerifyDropReceive(ReceiveData, Size);
     else if(FCSerr)
       VerifyFrameErrorReceive(ReceiveData, Size);
 	else if(!SkipRead)
