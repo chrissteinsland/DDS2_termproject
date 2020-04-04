@@ -365,10 +365,23 @@ program testPr_hdlc(
 			assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
 					Skip = 1;
-					$error("Data in Output buffer is not correct");
+					$error("Data in Output buffer is not the same as what is being written to the controller at time ½0t", $time);
         	TbErrorCnt++;
 				end
 			while(uin_hdlc.Tx_DataOutBuff == Data[i] || Skip);
+		end
+	endtask
+
+	task Verify_Output();
+		logic [7:0] Buffer;
+		Buffer = uin_hdlc.Tx_DataOutBuff;
+		for(int i=0;i<8;i++) begin
+			@(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
+				else begin
+					$error("Data on Tx is not equal to the buffer at time ½0t", $time);
+        	TbErrorCnt++;
+
+				end
 		end
 	endtask
 
@@ -393,9 +406,10 @@ program testPr_hdlc(
 
     if(Abort) 
       WriteAddress(TXSC, 04);
-    else
+    else begin
       WriteAddress(0, 2);
-		
+			Verify_DataOutBuff(messages, Size);
+		end
 
 		#5000ns;
   endtask
