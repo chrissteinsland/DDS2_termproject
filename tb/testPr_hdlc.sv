@@ -365,7 +365,7 @@ program testPr_hdlc(
 			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
 				else begin
 					Skip = 1;
-					$error("Data in Output buffer is not the same as what is being written to the controller at time ½0t", $time);
+					$error("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
         	TbErrorCnt++;
 				end
 			while(uin_hdlc.Tx_DataOutBuff == Data[i] || Skip);
@@ -378,7 +378,8 @@ program testPr_hdlc(
 		for(int i=0;i<8;i++) begin
 			@(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
 				else begin
-					$error("Data on Tx is not equal to the buffer at time ½0t", $time);
+					$display("Data on Tx is not equal to the buffer at time %0t", $time);
+					$display("Tx is %d, but should be %d, bit number %d in %d", uin_hdlc.Tx, Buffer[i], i, Buffer);
         	TbErrorCnt++;
 
 				end
@@ -398,7 +399,7 @@ program testPr_hdlc(
 
     for(int i=0; i<Size; i++) begin
 			messages[i] = $urandom;
-			$display("%d", messages[i]);
+			$display("Sent to buffer: %d", messages[i]);
     	WriteAddress(TXBuf, messages[i]);
     end
 
