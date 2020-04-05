@@ -459,10 +459,10 @@ program testPr_hdlc(
     #1000ns;
 
     if(Abort) 
-      WriteAddress(TXSC, 04);
+      WriteAddress(TXSC, 4);
     else begin
-      WriteAddress(0, 2);
-	Verify_DataOutBuff(messages, Size);
+      WriteAddress(TXSC, 2);
+        Verify_DataOutBuff(messages, Size);
     end
     #5000ns;
   endtask
