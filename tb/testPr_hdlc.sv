@@ -427,19 +427,6 @@ program testPr_hdlc(
       end
   endtask
 
-  task Verify_Output();
-    logic [7:0] Buffer;
-    Buffer = uin_hdlc.Tx_DataOutBuff;
-    for(int i=0;i<8;i++) begin
-      @(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
-        else begin
-          $display("Data on Tx is not equal to the buffer at time %0t", $time);
-          $display("Tx is %h, but should be %h, bit number %h in %h", uin_hdlc.Tx, Buffer[i], i, Buffer);
-          TbErrorCnt++;
-        end
-    end
-  endtask
-
   task Transmit(int Size, int Abort);
     string msg;
     logic [127:0][7:0] messages;
@@ -463,7 +450,6 @@ program testPr_hdlc(
       WriteAddress(TXSC, 2);
 			#1000ns;
       WriteAddress(TXSC, 4);
-				//Verify_Transmit_Abort(messages, Size);
 		end
     else begin
       WriteAddress(TXSC, 2);
