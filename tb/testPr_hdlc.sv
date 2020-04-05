@@ -363,7 +363,6 @@ program testPr_hdlc(
       @(posedge uin_hdlc.Tx_FCSDone);
       for(int i=0;i<Size;i++) begin
 	assert (uin_hdlc.Tx_DataOutBuff == Data[i]) 
-          $display("Data is correct: %h at time %0t", Data[i], $time);
 	  else begin
 	    $display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
 	    $display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_DataOutBuff, Data[i]);
@@ -399,7 +398,7 @@ program testPr_hdlc(
 
     for(int i=0; i<Size; i++) begin
       messages[i] = $urandom;
-      $display("Sent to buffer: %h", messages[i]);
+      //$display("Sent to buffer: %h", messages[i]);
       WriteAddress(TXBuf, messages[i]);
     end
 
