@@ -224,11 +224,12 @@ program testPr_hdlc(
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
     Transmit(13,0);                 //Normal
-    TestRxBuffer(34, 0);            // Normal
-    TestRxBuffer(76, 1);            // Mismatch
-    TestRxBuffer(103, 1);           // Mismatch
-    TestRxBuffer(126, 0);           // Normal
-    TestRxBuffer(4, 1);             // Mismatch
+    Transmit(25,1);                 //Abort
+    TestRxBuffer(34, 0);            //Normal
+    TestRxBuffer(76, 1);            //Mismatch
+    TestRxBuffer(103, 1);           //Mismatch
+    TestRxBuffer(126, 0);           //Normal
+    TestRxBuffer(4, 1);             //Mismatch
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -426,23 +427,6 @@ program testPr_hdlc(
       end
   endtask
 
-	task Verify_Zeroes();
-		
-	endtask
-	
-  task Verify_Output();
-    logic [7:0] Buffer;
-    Buffer = uin_hdlc.Tx_DataOutBuff;
-    for(int i=0;i<8;i++) begin
-      @(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
-        else begin
-          $display("Data on Tx is not equal to the buffer at time %0t", $time);
-          $display("Tx is %h, but should be %h, bit number %h in %h", uin_hdlc.Tx, Buffer[i], i, Buffer);
-          TbErrorCnt++;
-        end
-    end
-  endtask
-
   task Transmit(int Size, int Abort);
     string msg;
     logic [127:0][7:0] messages;
@@ -462,8 +446,11 @@ program testPr_hdlc(
 
     #1000ns;
 
-    if(Abort) 
+    if(Abort) begin 
+      WriteAddress(TXSC, 2);
+			#1000ns;
       WriteAddress(TXSC, 4);
+		end
     else begin
       WriteAddress(TXSC, 2);
         Verify_DataOutBuff(messages, Size);

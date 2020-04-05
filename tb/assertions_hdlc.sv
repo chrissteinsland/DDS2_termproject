@@ -18,6 +18,9 @@ module assertions_hdlc (
   output int   ErrCntAssertions,
   input  logic Clk,
   input  logic Rst,
+  input  logic WriteEnable,
+  input  logic[7:0] Data_In,
+  input  logic[2:0] Address,
   input  logic Rx,
   input  logic Rx_FlagDetect,
   input  logic Rx_ValidFrame,
@@ -37,6 +40,7 @@ module assertions_hdlc (
   input  logic[127:0][7:0] Tx_DataArray,
   input  logic[7:0] Tx_DataOutBuff,
   input  logic[7:0] Tx_FrameSize,
+  input  logic Tx_AbortedTrans,
   input  logic Tx_ValidFrame
 );
 
@@ -78,22 +82,7 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
-  /********************************************
-   *  Verify correct Idle_pattern behavior    *
-   ********************************************/
-  //Idle pattern generation and checking (1111_1111 when not operating)
-  property idle_pattern;
-    @(posedge Clk) disable iff(!Rst)
-      !Tx_ValidFrame && $past(!Tx_ValidFrame,8) |=> Tx;
-  endproperty
-
-  idle_pattern_assert: assert property (idle_pattern) 
-  	else begin 
-    	$error("Idle pattern not valid at time %0t", $time); 
-    	ErrCntAssertions++; 
-  	end
-
-  /*********************************************************
+ /*********************************************************
    *  Verify correct Rx status/control after receivin frame*
    *********************************************************/
 
@@ -130,5 +119,39 @@ module assertions_hdlc (
    else begin 
     $error("Zeroes not inserted correctly at time %0t", $time); 
     ErrCntAssertions++; 
-   end  
+   end
+
+  /********************************************
+   *  Verify correct Idle_pattern behavior    *
+   ********************************************/
+  //Assertion 7 - Idle pattern generation and checking (1111_1111 when not operating)
+  property idle_pattern;
+    @(posedge Clk) disable iff(!Rst)
+      !Tx_ValidFrame && $past(!Tx_ValidFrame,8) |=> Tx;
+  endproperty
+
+  idle_pattern_assert: assert property (idle_pattern) 
+   else begin 
+    $error("Idle pattern not valid at time %0t", $time); 
+    ErrCntAssertions++; 
+   end
+
+
+  /************************************************
+   *  Verify that Tx_AbortedTrans works correctly	*
+   ************************************************/
+
+  // Assertion 9 - Correct bits set in the RX status/control register after receiving frame
+
+  property Tx_AbortedTrans_correct;
+    @(posedge Clk) disable iff(!Rst) 
+			((Address == 0) && Data_In[2] && WriteEnable) |=> ##2 Tx_AbortedTrans;
+  endproperty
+
+  Tx_AbortedTrans_correct_Assert : assert property (Tx_AbortedTrans_correct) 
+  	else begin 
+   		$error("Tx_AbortedTrans not asserted correctly at time %0t", $time); 
+    	ErrCntAssertions++; 
+   end
+
 endmodule
