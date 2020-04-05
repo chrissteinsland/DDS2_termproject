@@ -18,6 +18,9 @@ module assertions_hdlc (
   output int   ErrCntAssertions,
   input  logic Clk,
   input  logic Rst,
+  input  logic WriteEnable,
+  input  logic Data_In,
+  input  logic Address,
   input  logic Rx,
   input  logic Rx_FlagDetect,
   input  logic Rx_ValidFrame,
@@ -37,6 +40,7 @@ module assertions_hdlc (
   input  logic[127:0][7:0] Tx_DataArray,
   input  logic[7:0] Tx_DataOutBuff,
   input  logic[7:0] Tx_FrameSize,
+  input  logic Tx_AbortedTrans,
   input  logic Tx_ValidFrame
 );
 
