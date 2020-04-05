@@ -463,7 +463,7 @@ program testPr_hdlc(
       WriteAddress(TXSC, 2);
 			#1000ns;
       WriteAddress(TXSC, 4);
-				Verify_Tramsit_Abort(messages, Size);
+				Verify_Transmit_Abort(messages, Size);
 		end
     else begin
       WriteAddress(TXSC, 2);
