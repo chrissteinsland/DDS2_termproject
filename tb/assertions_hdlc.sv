@@ -130,8 +130,7 @@ module assertions_hdlc (
 
   property Tx_AbortedTrans_correct;
     @(posedge Clk) disable iff(!Rst) 
-			((Address == 0) && Data_In[2] && WriteEnable) |-> ##2 Tx_AbortedTrans;
-			//((Address == 0) && (Data_In == 8'bxxxxx1xx)&& WriteEnable) |-> ##2 Tx_AbortedTrans;
+			((Address == 0) && Data_In[2] && WriteEnable) |=> ##2 Tx_AbortedTrans;
   endproperty
 
   Tx_AbortedTrans_correct_Assert : assert property (Tx_AbortedTrans_correct) 
