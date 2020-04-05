@@ -20,7 +20,7 @@ module bind_hdlc ();
     .Rx_Overflow      (uin_hdlc.Rx_Overflow),
     .Rx_WrBuff        (uin_hdlc.Rx_WrBuff), 
     .RxEN	      (uin_hdlc.RxEN),
-    .TxEN         (uin_hdlc.TxEN),
+    .TxEN             (uin_hdlc.TxEN),
     .Rx_EoF           (uin_hdlc.Rx_EoF),
     .Rx_Ready         (uin_hdlc.Rx_Ready),
     .Rx_Drop          (uin_hdlc.Rx_Drop),
