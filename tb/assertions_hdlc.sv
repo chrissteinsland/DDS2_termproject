@@ -111,8 +111,12 @@ module assertions_hdlc (
    ******************************************************************/
 
   // Assertion 6 - zero insertion and removal for transparent transmission 
+  sequence Tx_flag;
+    !Tx ##1 Tx[*6] ##1 !Tx;	
+  endsequence
+
   property zero_insertion;
-    @(posedge Clk) disable iff(!Rst) Tx_ValidFrame |-> Tx[*5] ##1 (!Tx || Tx_AbortedTrans);
+    @(posedge Clk) disable iff(!Rst) Tx_flag && Tx_ValidFrame |-> ##[0:$] $rose(Tx) ##[0:5] $fell(Tx);
   endproperty
 
   zero_insertion_Assert : assert property (zero_insertion) 
