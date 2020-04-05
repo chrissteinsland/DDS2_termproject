@@ -459,11 +459,12 @@ program testPr_hdlc(
 
     #1000ns;
 
-    if(Abort) 
+    if(Abort) begin 
       WriteAddress(TXSC, 2);
 			#1000ns;
       WriteAddress(TXSC, 4);
 				Verify_Tramsit_Abort(messages, Size);
+		end
     else begin
       WriteAddress(TXSC, 2);
         Verify_DataOutBuff(messages, Size);
