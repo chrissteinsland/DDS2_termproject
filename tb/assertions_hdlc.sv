@@ -116,7 +116,8 @@ module assertions_hdlc (
   endsequence
 
   property zero_insertion;
-    @(posedge Clk) disable iff(!Rst) Tx_flag && Tx_ValidFrame |-> ##[0:10000] $rose(Tx) ##[0:5] $fell(Tx);
+    @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag |-> Tx;
+		//		FUCK THIS ASSERTION!!!
   endproperty
 
   zero_insertion_Assert : assert property (zero_insertion) 
