@@ -17,7 +17,6 @@
    - A ReadAddress() task is provided, and addresses are documentet in the 
      HDLC Module Design Description
 */
-
 program testPr_hdlc(
   in_hdlc uin_hdlc
 );
@@ -29,6 +28,64 @@ program testPr_hdlc(
    *                               Student code                               *
    *                                                                          *
    ****************************************************************************/
+  // Check to see if data is equal in rx buffer
+  task RxCheckDataEqual(logic [127:0][7:0] data, int Size);
+    logic [7:0] ReadData;
+    for(int i = 0; i < Size; i++) begin
+      ReadAddress(RXBuf, ReadData);
+      assert(ReadData == data[i])
+        else begin
+          TbErrorCnt++;
+          $display("Error: Data in RXBuf is not equal to RX_data");
+        end
+    end
+  endtask;
+
+  // Test RX buffer for normal operation
+  task TestRxBuffer(int Size, int Mismatch);
+    logic [127:0][7:0] ReceiveData;
+    logic       [15:0] FCSBytes;
+
+    string msg;
+    if(Mismatch)
+      msg = "- Mismatch";
+    else
+      msg = "- Normal";
+    $display("*************************************************************");
+    $display("%t - Starting task TestRxBuffer %s", $time, msg);
+    $display("*************************************************************");
+
+    // Generate random data
+    for (int i = 0; i < Size; i++) begin
+      ReceiveData[i] = $urandom;
+    end
+
+    // FCS bytes
+    ReceiveData[Size]   = '0;
+    ReceiveData[Size+1] = '0;
+
+    //Calculate FCS bits;
+    GenerateFCSBytes(ReceiveData, Size, FCSBytes);
+    ReceiveData[Size]   = FCSBytes[7:0];
+    ReceiveData[Size+1] = FCSBytes[15:8];
+
+    //Enable FCS
+    WriteAddress(RXSC, 8'h20);
+
+    //Generate stimulus, load into module
+    InsertFlagOrAbort(1);
+    MakeRxStimulus(ReceiveData, Size + 2);
+    InsertFlagOrAbort(1);
+
+    // Create a mismatch case
+    if (Mismatch) begin
+        ReceiveData[2]++;
+    end
+
+    // Verify
+    VerifyNormalReceive(ReceiveData, Size);
+    
+  endtask
 
   // VerifyAbortReceive should verify correct value in the Rx status/control
   // register, and that the Rx data buffer is zero after abort.
@@ -75,14 +132,8 @@ program testPr_hdlc(
         end 
 
     //Check that Rx data is correct
-    for(int i = 0; i < Size; i++) begin
-      ReadAddress(RXBuf, ReadData);
-      assert(ReadData == data[i])
-        else begin
-          TbErrorCnt++;
-          $display("Error: Data in RXBuf is not equal to RX_data");
-        end
-    end
+    RxCheckDataEqual(data, Size);
+    
   endtask
 
   // VerifyOverflowReceive should verify correct value in the Rx status/control
@@ -93,17 +144,16 @@ program testPr_hdlc(
 
     wait(uin_hdlc.Rx_Ready);
 
-    // INSERT CODE HERE
-
     // Check RX status/control
     ReadAddress(RXSC, rx_status);
-    assert(rx_status[4])
+    assert(rx_status[4] == 0)
       else begin
         TbErrorCnt++; 
-        $display("Error: rx_status is not correct! %d", rx_status);
+        $display("Error: RX overflow!");
       end 
     
-	// VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+    // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
+    RxCheckDataEqual(data, Size);
 
   endtask
   
@@ -111,16 +161,6 @@ program testPr_hdlc(
     logic [7:0] ReadData;
     logic [7:0] rx_status;
    
-	/*		NOTE: Assignment does not ask to check this
-	//Check for RX Drop flag
-     ReadAddress(RXSC, rx_status);
-	 $display("rx_status = %d", rx_status);
-     assert(rx_status[1] != 0)
-      else begin 
-        TbErrorCnt++;
-        $display("Error: Drop flag not set at time %0t! (rx_status = %d)", $time, rx_status);
-      end
-	*/
 
     //Check that RXBuf is zero
     for(int i = 0; i < Size; i++) begin
@@ -156,10 +196,6 @@ program testPr_hdlc(
     end
   endtask
  
-
-
-
-
   /****************************************************************************
    *                                                                          *
    *                             Simulation code                              *
@@ -187,9 +223,16 @@ program testPr_hdlc(
     Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
+    Transmit(13,0);                 //Normal
+    TestRxBuffer(34, 0);            // Normal
+    TestRxBuffer(76, 1);            // Mismatch
+    TestRxBuffer(103, 1);           // Mismatch
+    TestRxBuffer(126, 0);           // Normal
+    TestRxBuffer(4, 1);             // Mismatch
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
+    #10ms;
     $stop;
   end
 
@@ -364,9 +407,63 @@ program testPr_hdlc(
       VerifyDropReceive(ReceiveData, Size);
     else if(FCSerr)
       VerifyFrameErrorReceive(ReceiveData, Size);
-	else if(!SkipRead)
+		else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
 
+    #5000ns;
+  endtask
+
+  task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
+      @(posedge uin_hdlc.Tx_FCSDone);
+      for(int i=0;i<Size;i++) begin
+	assert (uin_hdlc.Tx_DataOutBuff == Data[i]) 
+	  else begin
+	    $display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
+	    $display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_DataOutBuff, Data[i]);
+            TbErrorCnt++;
+          end
+        @(uin_hdlc.Tx_DataOutBuff); 
+      end
+  endtask
+
+  task Verify_Output();
+    logic [7:0] Buffer;
+    Buffer = uin_hdlc.Tx_DataOutBuff;
+    for(int i=0;i<8;i++) begin
+      @(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
+        else begin
+          $display("Data on Tx is not equal to the buffer at time %0t", $time);
+          $display("Tx is %h, but should be %h, bit number %h in %h", uin_hdlc.Tx, Buffer[i], i, Buffer);
+          TbErrorCnt++;
+        end
+    end
+  endtask
+
+  task Transmit(int Size, int Abort);
+    string msg;
+    logic [127:0][7:0] messages;
+    if(Abort)
+      msg = "- Abort";
+    else
+      msg = "- Normal";
+    $display("*************************************************************");
+    $display("%t - Starting task Transmit %s", $time, msg);
+    $display("*************************************************************");
+
+    for(int i=0; i<Size; i++) begin
+      messages[i] = $urandom;
+      //$display("Sent to buffer: %h", messages[i]);
+      WriteAddress(TXBuf, messages[i]);
+    end
+
+    #1000ns;
+
+    if(Abort) 
+      WriteAddress(TXSC, 4);
+    else begin
+      WriteAddress(TXSC, 2);
+        Verify_DataOutBuff(messages, Size);
+    end
     #5000ns;
   endtask
 

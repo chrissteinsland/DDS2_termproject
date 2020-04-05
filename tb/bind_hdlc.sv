@@ -5,7 +5,6 @@
 //////////////////////////////////////////////////
 
 module bind_hdlc ();
-
   bind test_hdlc assertions_hdlc u_assertion_bind(
     .ErrCntAssertions (uin_hdlc.ErrCntAssertions),
     .Clk              (uin_hdlc.Clk),
@@ -17,8 +16,19 @@ module bind_hdlc ();
     .Rx_AbortSignal   (uin_hdlc.Rx_AbortSignal),
     .Rx_Overflow      (uin_hdlc.Rx_Overflow),
     .Rx_WrBuff        (uin_hdlc.Rx_WrBuff), 
-	.RxEN			  (uin_hdlc.RxEN),
-	.TxEN			  (uin_hdlc.TxEN)
+    .RxEN	      (uin_hdlc.RxEN),
+    .TxEN         (uin_hdlc.TxEN),
+    .Rx_EoF           (uin_hdlc.Rx_EoF),
+    .Rx_Ready         (uin_hdlc.Rx_Ready),
+    .Rx_Drop          (uin_hdlc.Rx_Drop),
+    .Rx_FCSen         (uin_hdlc.Rx_FCSen),
+    .Rx_FrameError    (uin_hdlc.Rx_FrameError),
+    .Tx               (uin_hdlc.Tx),
+    .Tx_DataOutBuff   (uin_hdlc.Tx_DataOutBuff),
+    .Tx_DataArray     (uin_hdlc.Tx_DataArray),
+    .Tx_FrameSize     (uin_hdlc.Tx_FrameSize),
+    .Tx_ValidFrame     (uin_hdlc.Tx_ValidFrame)
+
 );
 
 endmodule

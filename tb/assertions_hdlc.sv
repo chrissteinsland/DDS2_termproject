@@ -25,11 +25,21 @@ module assertions_hdlc (
   input  logic Rx_AbortSignal,
   input  logic Rx_Overflow,
   input  logic Rx_WrBuff,
-  input	 logic TxEN,
   input  logic RxEN,
   input  logic Rx_EoF,
   input  logic Rx_FCSerr,
   input  logic Rx_Ready
+  input  logic Rx_FrameError,
+  input  logic Rx_FCSen,
+  input  logic Rx_Drop,
+  input  logic Rx_Ready,
+  input  logic Rx_EoF,
+  input	 logic TxEN,
+  input  logic Tx,
+  input  logic[127:0][7:0] Tx_DataArray,
+  input  logic[7:0] Tx_DataOutBuff,
+  input  logic[7:0] Tx_FrameSize,
+  input  logic Tx_ValidFrame
 );
 
   initial begin
@@ -71,7 +81,7 @@ module assertions_hdlc (
   end
 
   /********************************************
-   *  Verify correct Idle_pattern behavior	  *
+   *  Verify correct Idle_pattern behavior    *
    ********************************************/
   //Idle pattern generation and checking (1111_1111 when not operating)
   property idle_pattern;
@@ -85,4 +95,27 @@ module assertions_hdlc (
     ErrCntAssertions++; 
    end
 
+  /*********************************************************
+   *  Verify correct Rx status/control after receivin frame*
+   *********************************************************/
+
+  // Assertion 3 - Correct bits set in the RX status/control register after receiving frame
+
+  property RX_SC_correct;
+    @(posedge Clk) disable iff(!Rst) $rose(Rx_EoF) |->
+      if(Rx_AbortSignal)
+        (!Rx_Overflow ##0 Rx_AbortSignal ##0 !Rx_FrameError ##1 !Rx_Ready)
+      else if(Rx_Overflow)
+        (Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready)
+      else if(Rx_FrameError)
+        (!Rx_Overflow ##0 !Rx_AbortSignal ##0 Rx_FrameError ##0 !Rx_Ready)
+      else
+        (!Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready);
+  endproperty
+
+  RX_SC_correct_Assert : assert property (RX_SC_correct) 
+   else begin 
+    $error("RX status control register is not correct at time %0t", $time); 
+    ErrCntAssertions++; 
+   end
 endmodule
