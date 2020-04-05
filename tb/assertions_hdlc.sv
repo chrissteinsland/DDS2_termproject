@@ -88,10 +88,10 @@ module assertions_hdlc (
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
-   else begin 
-    $error("Idle pattern not valid at time %0t", $time); 
-    ErrCntAssertions++; 
-   end
+  	else begin 
+    	$error("Idle pattern not valid at time %0t", $time); 
+    	ErrCntAssertions++; 
+  	end
 
   /*********************************************************
    *  Verify correct Rx status/control after receivin frame*
@@ -112,8 +112,23 @@ module assertions_hdlc (
   endproperty
 
   RX_SC_correct_Assert : assert property (RX_SC_correct) 
+  	else begin 
+    	$error("RX status control register is not correct at time %0t", $time); 
+    	ErrCntAssertions++; 
+		end	
+ 
+  /******************************************************************
+   *  Verify zero insertion and removal for transparent transmission*
+   ******************************************************************/
+
+  // Assertion 6 - Correct bits set in the RX status/control register after receiving frame
+  property zero_insertion;
+    @(posedge Clk) disable iff(!Rst) Tx_ValidFrame |-> (Tx[5*] ##1 !Tx) || Tx_Aborted;
+  endproperty
+
+  zero_insertion_Assert : assert property (zero_insertion) 
    else begin 
-    $error("RX status control register is not correct at time %0t", $time); 
+    $error("Zeroes not inserted correctly at time %0t", $time); 
     ErrCntAssertions++; 
-   end
+   end  
 endmodule
