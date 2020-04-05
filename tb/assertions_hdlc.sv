@@ -110,9 +110,9 @@ module assertions_hdlc (
    *  Verify zero insertion and removal for transparent transmission*
    ******************************************************************/
 
-  // Assertion 6 - Correct bits set in the RX status/control register after receiving frame
+  // Assertion 6 - zero insertion and removal for transparent transmission 
   property zero_insertion;
-    @(posedge Clk) disable iff(!Rst) Tx_ValidFrame |-> (Tx[5*] ##1 (!Tx || Tx_AbortedTrans));
+    @(posedge Clk) disable iff(!Rst) Tx_ValidFrame |-> Tx[*5] ##1 (!Tx || Tx_AbortedTrans);
   endproperty
 
   zero_insertion_Assert : assert property (zero_insertion) 
