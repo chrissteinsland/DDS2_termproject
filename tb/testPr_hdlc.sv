@@ -426,6 +426,10 @@ program testPr_hdlc(
       end
   endtask
 
+	task Verify_Zeroes();
+		
+	endtask
+	
   task Verify_Output();
     logic [7:0] Buffer;
     Buffer = uin_hdlc.Tx_DataOutBuff;
