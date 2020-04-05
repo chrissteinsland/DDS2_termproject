@@ -17,7 +17,7 @@ module bind_hdlc ();
     .Rx_Overflow      (uin_hdlc.Rx_Overflow),
     .Rx_WrBuff        (uin_hdlc.Rx_WrBuff), 
     .RxEN	      (uin_hdlc.RxEN),
-    .TxEN         (uin_hdlc.TxEN),
+    .TxEN             (uin_hdlc.TxEN),
     .Rx_EoF           (uin_hdlc.Rx_EoF),
     .Rx_Ready         (uin_hdlc.Rx_Ready),
     .Rx_Drop          (uin_hdlc.Rx_Drop),
@@ -27,7 +27,7 @@ module bind_hdlc ();
     .Tx_DataOutBuff   (uin_hdlc.Tx_DataOutBuff),
     .Tx_DataArray     (uin_hdlc.Tx_DataArray),
     .Tx_FrameSize     (uin_hdlc.Tx_FrameSize),
-    .Tx_ValidFrame     (uin_hdlc.Tx_ValidFrame)
+    .Tx_ValidFrame    (uin_hdlc.Tx_ValidFrame)
 
 );
 
