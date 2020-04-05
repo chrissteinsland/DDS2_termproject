@@ -19,8 +19,8 @@ module assertions_hdlc (
   input  logic Clk,
   input  logic Rst,
   input  logic WriteEnable,
-  input  logic Data_In,
-  input  logic Address,
+  input  logic[7:0] Data_In,
+  input  logic[2:0] Address,
   input  logic Rx,
   input  logic Rx_FlagDetect,
   input  logic Rx_ValidFrame,
@@ -130,7 +130,8 @@ module assertions_hdlc (
 
   property Tx_AbortedTrans_correct;
     @(posedge Clk) disable iff(!Rst) 
-			((Address == 0) && (Data_In == 8'bxxxxx1xx)&& WriteEnable) |-> ##2 Tx_AbortedTrans;
+			((Address == 0) && Data_In[2] && WriteEnable) |-> ##2 Tx_AbortedTrans;
+			//((Address == 0) && (Data_In == 8'bxxxxx1xx)&& WriteEnable) |-> ##2 Tx_AbortedTrans;
   endproperty
 
   Tx_AbortedTrans_correct_Assert : assert property (Tx_AbortedTrans_correct) 
