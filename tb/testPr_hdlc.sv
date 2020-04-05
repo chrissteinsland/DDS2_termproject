@@ -224,11 +224,12 @@ program testPr_hdlc(
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
     Transmit(13,0);                 //Normal
-    TestRxBuffer(34, 0);            // Normal
-    TestRxBuffer(76, 1);            // Mismatch
-    TestRxBuffer(103, 1);           // Mismatch
-    TestRxBuffer(126, 0);           // Normal
-    TestRxBuffer(4, 1);             // Mismatch
+    Transmit(25,1);                 //Abort
+    TestRxBuffer(34, 0);            //Normal
+    TestRxBuffer(76, 1);            //Mismatch
+    TestRxBuffer(103, 1);           //Mismatch
+    TestRxBuffer(126, 0);           //Normal
+    TestRxBuffer(4, 1);             //Mismatch
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -459,7 +460,10 @@ program testPr_hdlc(
     #1000ns;
 
     if(Abort) 
+      WriteAddress(TXSC, 2);
+			#1000ns;
       WriteAddress(TXSC, 4);
+				Verify_Tramsit_Abort(messages, Size);
     else begin
       WriteAddress(TXSC, 2);
         Verify_DataOutBuff(messages, Size);
