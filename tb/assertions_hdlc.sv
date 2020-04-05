@@ -78,21 +78,6 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
-  /********************************************
-   *  Verify correct Idle_pattern behavior    *
-   ********************************************/
-  //Idle pattern generation and checking (1111_1111 when not operating)
-  property idle_pattern;
-    @(posedge Clk) disable iff(!Rst)
-      !Tx_ValidFrame && $past(!Tx_ValidFrame,8) |=> Tx;
-  endproperty
-
-  idle_pattern_assert: assert property (idle_pattern) 
-   else begin 
-    $error("Idle pattern not valid at time %0t", $time); 
-    ErrCntAssertions++; 
-   end
-
   /*********************************************************
    *  Verify correct Rx status/control after receivin frame*
    *********************************************************/
@@ -116,4 +101,38 @@ module assertions_hdlc (
     $error("RX status control register is not correct at time %0t", $time); 
     ErrCntAssertions++; 
    end
+
+  /********************************************
+   *  Verify correct Idle_pattern behavior    *
+   ********************************************/
+  //Assertion 7 - Idle pattern generation and checking (1111_1111 when not operating)
+  property idle_pattern;
+    @(posedge Clk) disable iff(!Rst)
+      !Tx_ValidFrame && $past(!Tx_ValidFrame,8) |=> Tx;
+  endproperty
+
+  idle_pattern_assert: assert property (idle_pattern) 
+   else begin 
+    $error("Idle pattern not valid at time %0t", $time); 
+    ErrCntAssertions++; 
+   end
+
+
+  /************************************************
+   *  Verify that Tx_AbortedTrans works correctly	*
+   ************************************************/
+
+  // Assertion 9 - Correct bits set in the RX status/control register after receiving frame
+
+  property Tx_AbortedTrans_correct;
+    @(posedge Clk) disable iff(!Rst) 
+			((Address == 0) && Data_In[2] && WriteEnable) |-> ##2 Tx_AbortedTrans;
+  endproperty
+
+  Tx_AbortedTrans_correct_Assert : assert property (Tx_AbortedTrans_correct) 
+   else begin 
+    $error("Tx_AbortedTrans not asserted correctly at time %0t", $time); 
+    ErrCntAssertions++; 
+   end
+
 endmodule
