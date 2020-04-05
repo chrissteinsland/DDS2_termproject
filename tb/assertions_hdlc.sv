@@ -29,7 +29,7 @@ module assertions_hdlc (
   input  logic Rx_FCSen,
   input  logic Rx_Drop,
   input  logic Rx_Ready,
-  input  logic Rx_EoF ,
+  input  logic Rx_EoF,
   input  logic Tx,
   input  logic[127:0][7:0] Tx_DataArray,
   input  logic[7:0] Tx_DataOutBuff,
@@ -99,46 +99,4 @@ module assertions_hdlc (
     $error("RX status control register is not correct at time %0t", $time); 
     ErrCntAssertions++; 
    end
-
-  /***********************************************************
-   *  Verify correct TX output according to written TX buffer*
-   ***********************************************************/
-  // Assertion 4 - Correct TX output according to written TX buffer
-/*
-  sequence Tx_flag;
- 	!Tx ##1 Tx[*6] ##1 !Tx;	
-  endsequence
-  function bit correct_tx(logic [127:0][7:0] Data, logic [7:0] Size);
-    for(int i=0;i<Tx_FrameSize;i++) begin
-      logic [7:0] Current_Byte;
-      Current_Byte = Data[i];
-      for(int j=0;j<8;j++) begin
-        if(Tx != Current_Byte[j]) return 0; 
-      end
-    end
-    return 1;
-  endfunction;
-  property Tx_according_to_buffer;
-    logic[127:0][7:0] Tx_DataArray_Saved;
-		int loop_counter;
-		int size;
-    @(posedge Clk) disable iff(!Rst) ($rose(Tx_ValidFrame), 
-																				DataArray_Saved = Tx_DataArray,
-																				size = Tx_FrameSize) |-> 
-      Tx == DataArray_Saved[0][0] ##1
-      Tx == DataArray_Saved[0][1] ##1
-      Tx == DataArray_Saved[0][2] ##1
-      Tx == DataArray_Saved[0][3] ##1
-      Tx == DataArray_Saved[0][4] ##1
-      Tx == DataArray_Saved[0][5] ##1
-      Tx == DataArray_Saved[0][6] ##1
-      Tx == DataArray_Saved[0][7] ##1
-  endproperty
-
-  Tx_according_to_buffer_Assert : assert property (Tx_according_to_buffer) $display("Tx is correct according to Tx buffer");
-    else begin 
-      $display("Tx is not correct according to Tx buffer at time ½0t", $time); 
-      ErrCntAssertions++; 
-    end
-*/
 endmodule
