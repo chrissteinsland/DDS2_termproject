@@ -41,7 +41,7 @@ module assertions_hdlc (
    *******************************************/
 
   sequence Rx_flag;
- 	!Rx ##1 Rx[*6] ##1 !Rx;	
+    !Rx ##1 Rx[*6] ##1 !Rx;	
   endsequence
 
   // Check if flag sequence is detected
@@ -61,7 +61,7 @@ module assertions_hdlc (
 
   //If abort is detected during valid frame. then abort signal should go high
   property RX_AbortSignal;
- 		@(posedge Clk) Rx_AbortDetect && Rx_ValidFrame |=> Rx_AbortSignal;  
+    @(posedge Clk) Rx_AbortDetect && Rx_ValidFrame |=> Rx_AbortSignal;  
   endproperty
 
   RX_AbortSignal_Assert : assert property (RX_AbortSignal) 
@@ -74,10 +74,10 @@ module assertions_hdlc (
    *  Verify correct Idle_pattern behavior	  *
    ********************************************/
   //Idle pattern generation and checking (1111_1111 when not operating)
-
   property idle_pattern;
- 		@(posedge Clk) Rx[*8] |=> Tx;
-	endproperty
+    @(posedge Clk) disable iff(!Rst || $past(Tx_ValidFrame,8))
+      !Tx_ValidFrame |-> Tx[*8];
+  endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
    else begin 
