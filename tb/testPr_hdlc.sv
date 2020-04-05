@@ -50,7 +50,7 @@ program testPr_hdlc(
     assert(rx_frame_size == Size)
     else begin
         TbErrorCnt++;
-        $display("Frame size reg (%d) is not equal to recieved frames (%d)", rx_frame_size, Size);
+        $display("Frame size reg (%0d) is not equal to recieved frames (%0d)", rx_frame_size, Size);
     end
   endtask;
 
