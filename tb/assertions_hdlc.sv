@@ -74,10 +74,12 @@ module assertions_hdlc (
     !Rx ##1 Rx[*7];	
   endsequence
 
+  // Check 8
   property RX_abort_detected;
-    @(posedge Clk) Rx_abort_seq |=> Rx_AbortDetect;  
+    @(posedge Clk) Rx_abort_seq |=> ##1 Rx_AbortDetect;  
   endproperty
 
+  // Check 10
   //If abort is detected during valid frame. then abort signal should go high
   property RX_AbortSignal;
     @(posedge Clk) Rx_AbortDetect && Rx_ValidFrame |=> Rx_AbortSignal;  
