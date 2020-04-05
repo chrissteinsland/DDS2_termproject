@@ -163,16 +163,16 @@ program testPr_hdlc(
     Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
     Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
     Receive( 45, 0, 0, 0, 0, 0, 0); //Normal
+    Receive(126, 0, 0, 0, 0, 0, 0); //Normal
+    Receive(122, 1, 0, 0, 0, 0, 0); //Abort
+    Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
+    Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
+    Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
+    Receive(126, 0, 1, 0, 0, 0, 0); //FCSerr
+    Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
+    Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
+    Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
     Transmit(13,0);                 //Normal
-    //Receive(126, 0, 0, 0, 0, 0, 0); //Normal
-    //Receive(122, 1, 0, 0, 0, 0, 0); //Abort
-    //Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
-    //Receive( 25, 0, 0, 0, 0, 0, 0); //Normal
-    //Receive( 47, 0, 0, 0, 0, 0, 0); //Normal
-    //Receive(126, 0, 1, 0, 0, 0, 0); //FCSerr
-    //Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
-    //Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
-    //Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
 
 
     $display("*************************************************************");
