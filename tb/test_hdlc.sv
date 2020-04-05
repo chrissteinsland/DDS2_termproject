@@ -58,6 +58,8 @@ module test_hdlc ();
   assign uin_hdlc.Tx_Enable          = u_dut.Tx_Enable;
   assign uin_hdlc.Tx_DataInBuff      = u_dut.Tx_DataInBuff;
   assign uin_hdlc.Tx_AbortFrame      = u_dut.Tx_AbortFrame;
+  assign uin_hdlc.Tx                 = u_dut.Tx;
+
 
   //Clock
   always #250ns uin_hdlc.Clk = ~uin_hdlc.Clk;
@@ -76,10 +78,10 @@ module test_hdlc ();
     .Rx          (uin_hdlc.Rx),
     .RxEN        (uin_hdlc.RxEN),
     .Rx_Ready    (uin_hdlc.Rx_Ready),
-		// TX
+    // TX
     .Tx          (uin_hdlc.Tx),
     .TxEN        (uin_hdlc.TxEN),
-    .Tx_Done		 (uin_hdlc.Tx_Done)
+    .Tx_Done	 (uin_hdlc.Tx_Done)
 		
 );
 

@@ -178,7 +178,7 @@ program testPr_hdlc(
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
-    #100us;
+    #10ms;
     $stop;
   end
 
@@ -359,40 +359,36 @@ program testPr_hdlc(
     #5000ns;
   endtask
 
-	task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
-		bit Skip;
-		for(int i=0;i<Size;i++) begin
-			Skip = 0;
-			$display("Skip: %d", Skip);
-			@(posedge uin_hdlc.Clk) assert (uin_hdlc.Tx_DataOutBuff == Data[i]) Skip = 0;		
-				else begin
-					Skip = 1;
-					$display("Skip: %d", Skip);
-					$display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
-					$display("DataOutBuffer is %d, while it should be %d", uin_hdlc.Tx_DataOutBuff, Data[i]);
-        	TbErrorCnt++;
-				end
-			while(uin_hdlc.Tx_DataOutBuff == Data[i] || Skip);
-		end
-	endtask
+  task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
+      @(posedge uin_hdlc.Tx_FCSDone);
+      for(int i=0;i<Size;i++) begin
+	assert (uin_hdlc.Tx_DataOutBuff == Data[i]) 
+          $display("Data is correct: %h at time %0t", Data[i], $time);
+	  else begin
+	    $display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
+	    $display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_DataOutBuff, Data[i]);
+            TbErrorCnt++;
+          end
+        @(uin_hdlc.Tx_DataOutBuff); 
+      end
+  endtask
 
-	task Verify_Output();
-		logic [7:0] Buffer;
-		Buffer = uin_hdlc.Tx_DataOutBuff;
-		for(int i=0;i<8;i++) begin
-			@(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
-				else begin
-					$display("Data on Tx is not equal to the buffer at time %0t", $time);
-					$display("Tx is %d, but should be %d, bit number %d in %d", uin_hdlc.Tx, Buffer[i], i, Buffer);
-        	TbErrorCnt++;
-
-				end
-		end
-	endtask
+  task Verify_Output();
+    logic [7:0] Buffer;
+    Buffer = uin_hdlc.Tx_DataOutBuff;
+    for(int i=0;i<8;i++) begin
+      @(posedge uin_hdlc.Clk) assert(uin_hdlc.Tx == Buffer[i])
+        else begin
+          $display("Data on Tx is not equal to the buffer at time %0t", $time);
+          $display("Tx is %h, but should be %h, bit number %h in %h", uin_hdlc.Tx, Buffer[i], i, Buffer);
+          TbErrorCnt++;
+        end
+    end
+  endtask
 
   task Transmit(int Size, int Abort);
     string msg;
-		logic [127:0][7:0] messages;
+    logic [127:0][7:0] messages;
     if(Abort)
       msg = "- Abort";
     else
@@ -402,9 +398,9 @@ program testPr_hdlc(
     $display("*************************************************************");
 
     for(int i=0; i<Size; i++) begin
-			messages[i] = $urandom;
-			$display("Sent to buffer: %d", messages[i]);
-    	WriteAddress(TXBuf, messages[i]);
+      messages[i] = $urandom;
+      $display("Sent to buffer: %h", messages[i]);
+      WriteAddress(TXBuf, messages[i]);
     end
 
     #1000ns;
@@ -413,10 +409,9 @@ program testPr_hdlc(
       WriteAddress(TXSC, 04);
     else begin
       WriteAddress(0, 2);
-		//	Verify_DataOutBuff(messages, Size);
-		end
-
-		#5000ns;
+	Verify_DataOutBuff(messages, Size);
+    end
+    #5000ns;
   endtask
 
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
