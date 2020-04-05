@@ -30,7 +30,7 @@ module bind_hdlc ();
     .Tx_DataOutBuff   (uin_hdlc.Tx_DataOutBuff),
     .Tx_DataArray     (uin_hdlc.Tx_DataArray),
     .Tx_FrameSize     (uin_hdlc.Tx_FrameSize),
-    .Tx_AbortedTrans	(uin_hdlc.Tx_FrameSize),
+    .Tx_AbortedTrans	(uin_hdlc.Tx_AbortedTrans),
     .Tx_ValidFrame    (uin_hdlc.Tx_ValidFrame)
 
 );
