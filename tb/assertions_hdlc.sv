@@ -28,12 +28,10 @@ module assertions_hdlc (
   input  logic RxEN,
   input  logic Rx_EoF,
   input  logic Rx_FCSerr,
-  input  logic Rx_Ready
   input  logic Rx_FrameError,
   input  logic Rx_FCSen,
   input  logic Rx_Drop,
   input  logic Rx_Ready,
-  input  logic Rx_EoF,
   input	 logic TxEN,
   input  logic Tx,
   input  logic[127:0][7:0] Tx_DataArray,
@@ -85,8 +83,8 @@ module assertions_hdlc (
    ********************************************/
   //Idle pattern generation and checking (1111_1111 when not operating)
   property idle_pattern;
-    @(posedge Clk) disable iff(!Rst || $past(Tx_ValidFrame,8))
-      !Tx_ValidFrame |-> Tx[*8];
+    @(posedge Clk) disable iff(!Rst)
+      !Tx_ValidFrame && $past(!Tx_ValidFrame,8) |=> Tx;
   endproperty
 
   idle_pattern_assert: assert property (idle_pattern) 
