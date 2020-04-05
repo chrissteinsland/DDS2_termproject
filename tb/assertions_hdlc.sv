@@ -87,7 +87,7 @@ module assertions_hdlc (
 
 
   RX_Detect_Assert : assert property (RX_abort_detected) 
-    $error("Abort detected as expected"); 
+    $display("Abort detected as expected"); 
    else begin 
     $error("Rx_AbortDetect did not go high after abort sequence %0t", $time); 
     ErrCntAssertions++; 
@@ -95,7 +95,7 @@ module assertions_hdlc (
 
 
   RX_AbortSignal_Assert : assert property (RX_AbortSignal) 
-    $error("Abort signal went high as expected"); 
+    $display("Abort signal went high as expected"); 
    else begin 
     $error("AbortSignal did not go high after AbortDetect during validframe at time %0t", $time); 
     ErrCntAssertions++; 
