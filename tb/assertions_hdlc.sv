@@ -94,7 +94,7 @@ module assertions_hdlc (
 			(!Rx_Overflow ##0 !Rx_AbortSignal ##0 !Rx_FrameError ##0 Rx_Ready);
   endproperty
 
-  RX_SC_correct_Assert : assert property (RX_SC_correct) $display("RX status control register correct");
+  RX_SC_correct_Assert : assert property (RX_SC_correct) 
    else begin 
     $error("RX status control register is not correct at time %0t", $time); 
     ErrCntAssertions++; 
