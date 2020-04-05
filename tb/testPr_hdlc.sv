@@ -41,6 +41,20 @@ program testPr_hdlc(
     end
   endtask;
 
+
+  // Check that the frame size is equal to received frames
+  task RxCheckFrameSize(int Size);
+    logic [7:0] rx_frame_size;
+    ReadAddress(RXLen, rx_frame_size);
+
+    assert(rx_frame_size == Size)
+    else begin
+        TbErrorCnt++;
+        $display("Frame size reg (%0d) is not equal to recieved frames (%0d)", rx_frame_size, Size);
+    end
+  endtask;
+
+
   // Test RX buffer for normal operation
   task TestRxBuffer(int Size, int Mismatch);
     logic [127:0][7:0] ReceiveData;
@@ -410,6 +424,9 @@ program testPr_hdlc(
       VerifyFrameErrorReceive(ReceiveData, Size);
 		else if(!SkipRead)
       VerifyNormalReceive(ReceiveData, Size);
+
+    // Check Framsize is equal to number of bytes received
+    RxCheckFrameSize(Size);
 
     #5000ns;
   endtask
