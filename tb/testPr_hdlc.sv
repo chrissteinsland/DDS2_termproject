@@ -417,12 +417,7 @@ program testPr_hdlc(
   task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
 		@(posedge uin_hdlc.Tx_RdBuff);
     for(int i=0;i<Size;i++) begin
-  		//	TODO: Modify to check DataBuff instead of Data. No need for waiting gymnastics
-			//if(i<(Size-1)) 	@(posedge uin_hdlc.Tx_RdBuff);
-			//else 						#1500ns;
-
-
-			if(i) @(negedge uin_hdlc.Tx_RdBuff);
+  	if(i) @(negedge uin_hdlc.Tx_RdBuff);
 			assert (uin_hdlc.Tx_DataOutBuff == Data[i]) 
 	  	else begin
 	    	$display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
