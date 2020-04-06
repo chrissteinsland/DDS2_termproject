@@ -448,16 +448,12 @@ program testPr_hdlc(
     end
 
     #1000ns;
-
+		WriteAddress(TXSC, 2);
     if(Abort) begin 
-      WriteAddress(TXSC, 2);
 			#1000ns;
       WriteAddress(TXSC, 4);
 		end
-    else begin
-      WriteAddress(TXSC, 2);
-        Verify_DataOutBuff(messages, Size);
-    end
+    else Verify_DataOutBuff(messages, Size);
     #5000ns;
   endtask
 
