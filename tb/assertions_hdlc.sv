@@ -74,10 +74,12 @@ module assertions_hdlc (
     !Rx ##1 Rx[*7];	
   endsequence
 
+  // Check 8
   property RX_abort_detected;
-    @(posedge Clk) Rx_abort_seq |=> Rx_AbortDetect;  
+    @(posedge Clk) Rx_abort_seq |=> ##1 $rose(Rx_AbortDetect);  
   endproperty
 
+  // Check 10
   //If abort is detected during valid frame. then abort signal should go high
   property RX_AbortSignal;
     @(posedge Clk) Rx_AbortDetect && Rx_ValidFrame |=> Rx_AbortSignal;  
@@ -92,6 +94,7 @@ module assertions_hdlc (
 
 
   RX_AbortSignal_Assert : assert property (RX_AbortSignal) 
+    $display("Abort signal went high as expected"); 
    else begin 
     $error("AbortSignal did not go high after AbortDetect during validframe at time %0t", $time); 
     ErrCntAssertions++; 
