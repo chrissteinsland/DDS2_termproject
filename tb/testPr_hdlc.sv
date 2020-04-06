@@ -439,16 +439,16 @@ program testPr_hdlc(
     $display("*************************************************************");
 
     for(int i=0; i<Size; i++) begin
-      messages[i] = $urandom;
+      messages[i] = i;
       //$display("Sent to buffer: %h", messages[i]);
       WriteAddress(TXBuf, messages[i]);
     end
 
-    #1000ns;
+    #100ns;
 
     if(Abort) begin 
       WriteAddress(TXSC, 2);
-			#1000ns;
+			#100ns;
       WriteAddress(TXSC, 4);
 		end
     else begin
