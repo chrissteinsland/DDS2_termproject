@@ -427,7 +427,7 @@ program testPr_hdlc(
 	    	$display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_Data, Data[i]);
         TbErrorCnt++;
       end
-    	@(uin_hdlc.Tx_Data); 
+    	@(posedge uin_hdlc.Tx_RdBuff); 
 		end
   endtask
 
