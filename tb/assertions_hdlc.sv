@@ -119,7 +119,7 @@ module assertions_hdlc (
     @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:$] Tx[*5] |=> !Tx;
   endproperty
 
-  zero_insertion_Assert : assert property (zero_insertion) 
+  zero_insertion_Assert : assert property (zero_insertion) $display("Possible zero insertion detected");
   	else begin 
     	$error("Zeroes not inserted correctly at time %0t", $time); 
     	ErrCntAssertions++; 
