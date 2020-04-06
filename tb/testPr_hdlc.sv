@@ -471,12 +471,12 @@ program testPr_hdlc(
 
 		#1000ns;
 		WriteAddress(TXSC, 2);
-		$display("Waiting for Tx_ValidFrame to go high");
 		@(posedge uin_hdlc.Tx_ValidFrame);
-		$display("It did go high");
 		while(uin_hdlc.Tx_ValidFrame == 1) begin
 			@(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
 		end
+		for(int i=0; i<8; i++) @(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
+		uin_hdlc.Rx = 0;
 	endtask	
 		
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
