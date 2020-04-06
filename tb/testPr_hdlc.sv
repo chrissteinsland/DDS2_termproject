@@ -415,7 +415,8 @@ program testPr_hdlc(
   endtask
 
   task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
-  	@(posedge uin_hdlc.Tx_FCSDone);
+  	@(posedge uin_hdlc.Tx_RdBuff); 
+//  	@(posedge uin_hdlc.Tx_FCSDone);
     for(int i=0;i<Size;i++) begin
 			assert (uin_hdlc.Tx_Data == Data[i]) 
 	  	else begin
@@ -423,7 +424,6 @@ program testPr_hdlc(
 	    	$display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_Data, Data[i]);
         TbErrorCnt++;
       end
-    	@(posedge uin_hdlc.Tx_RdBuff); 
 		end
   endtask
 
