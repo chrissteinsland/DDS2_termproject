@@ -417,7 +417,7 @@ program testPr_hdlc(
   task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
     for(int i=0;i<Size;i++) begin
   		if(i<(Size-1)) 	@(posedge uin_hdlc.Tx_RdBuff);
-			else 						#200ns;	//@(posedge uin_hdlc.Tx_Data);
+			else 						#500ns;	//@(posedge uin_hdlc.Tx_Data);
 
 			assert (uin_hdlc.Tx_Data == Data[i]) 
 	  	else begin
