@@ -119,7 +119,7 @@ module assertions_hdlc (
     @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:$] Tx[*5] |=> !Tx;
   endproperty
 
-  zero_insertion_Assert : assert property (zero_insertion) $display("Tx was high for 5 clock cycles, but then fell to low"); 
+  zero_insertion_Assert : assert property (zero_insertion) 
   	else begin 
     	$error("Zeroes not inserted correctly at time %0t", $time); 
     	ErrCntAssertions++; 
