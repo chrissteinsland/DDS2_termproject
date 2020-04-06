@@ -233,7 +233,7 @@ program testPr_hdlc(
     TestRxBuffer(103, 1);           //Mismatch
     TestRxBuffer(126, 0);           //Normal
     TestRxBuffer(4, 1);             //Mismatch
-		VerifyReceiveTransmit(30);			//Normal
+		Verify_Transmit_Receive(30);			//Normal
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -459,7 +459,6 @@ program testPr_hdlc(
   endtask
 
 	task Verify_Transmit_Receive(int Size);
-    string msg;
     logic [127:0][7:0] messages;
     $display("*************************************************************");
     $display("%t - Starting task Transmit to Receive", $time);
