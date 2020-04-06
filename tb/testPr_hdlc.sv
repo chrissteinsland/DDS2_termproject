@@ -415,9 +415,9 @@ program testPr_hdlc(
   endtask
 
   task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
-  	@(posedge uin_hdlc.Tx_RdBuff); 
 //  	@(posedge uin_hdlc.Tx_FCSDone);
     for(int i=0;i<Size;i++) begin
+  		@(posedge uin_hdlc.Tx_RdBuff); 
 			assert (uin_hdlc.Tx_Data == Data[i]) 
 	  	else begin
 	    	$display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
