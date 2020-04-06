@@ -225,6 +225,10 @@ program testPr_hdlc(
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
     Transmit(13,0);                 //Normal
     Transmit(25,1);                 //Abort
+    Transmit(69,0);                 //Normal
+    Transmit(128,0);                //Normal
+    Transmit(3,0);                  //Normal
+    Transmit(18,0);                 //Normal
     TestRxBuffer(34, 0);            //Normal
     TestRxBuffer(76, 1);            //Mismatch
     TestRxBuffer(103, 1);           //Mismatch
