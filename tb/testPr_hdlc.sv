@@ -418,7 +418,7 @@ program testPr_hdlc(
 	    	$display("Entering for loop");
     for(int i=0;i<Size;i++) begin
   		if(i<(Size-1) @(posedge uin_hdlc.Tx_RdBuff);
-			else @(posedge uin_hdlt.Tx_Data);
+			else @(posedge uin_hdlc.Tx_Data);
 
 			assert (uin_hdlc.Tx_Data == Data[i]) 
 	  	else begin
