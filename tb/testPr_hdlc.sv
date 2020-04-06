@@ -475,14 +475,13 @@ program testPr_hdlc(
 		@(posedge uin_hdlc.Tx_ValidFrame);
 		while(uin_hdlc.Tx_ValidFrame == 1 || uin_hdlc.Rx_Ready == 0) begin
 			@(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
-			if(uin_hdlc.Rx_WrBuff && counter < Size) begin
+			if(uin_hdlc.Rx_WrBuff && counter < Size) 
 				assert(uin_hdlc.Rx_Data == messages[counter]) 
-      		else begin 
-        		TbErrorCnt++;
-        			$display("Received byte not what was transmitted! Expected %h, received %h at time %0t", messages[counter], uin_hdlc.Rx_Data, $time);
-					end
-				counter++;
+      else begin 
+      	TbErrorCnt++;
+        $display("Received byte not what was transmitted! Expected %h, received %h at time %0t", messages[counter], uin_hdlc.Rx_Data, $time);
 			end
+			counter++;
 		end
 		uin_hdlc.Rx = 0;
 	endtask	
