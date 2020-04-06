@@ -233,6 +233,7 @@ program testPr_hdlc(
     TestRxBuffer(103, 1);           //Mismatch
     TestRxBuffer(126, 0);           //Normal
     TestRxBuffer(4, 1);             //Mismatch
+		VerifyReceiveTransmit(30);			//Normal
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -457,6 +458,26 @@ program testPr_hdlc(
     #5000ns;
   endtask
 
+	task Verify_Transmit_Receive(int Size);
+    string msg;
+    logic [127:0][7:0] messages;
+    $display("*************************************************************");
+    $display("%t - Starting task Transmit to Receive", $time);
+    $display("*************************************************************");
+
+    for(int i=0; i<Size; i++) begin
+      messages[i] = $urandom;
+      WriteAddress(TXBuf, messages[i]);
+    end
+
+		#1000ns;
+		WriteAddress(TXSC, 2);
+		@(negedge uin_hdlc.Tx_Done);
+		while(uin_hdlc.Tx == 0) begin
+			uin_hdlc.Rx = uin_hdlc.Tx;
+		end
+	endtask	
+		
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
     logic [23:0] CheckReg;
     CheckReg[15:8]  = data[1];
