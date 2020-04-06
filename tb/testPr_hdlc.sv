@@ -472,9 +472,9 @@ program testPr_hdlc(
 		#1000ns;
 		WriteAddress(TXSC, 2);
 		$display("Waiting for Tx_Done to go low");
-		@(negedge uin_hdlc.Tx_Done);
+		@(posedge uin_hdlc.Tx_ValidFrame);
 		$display("It did go low");
-		while(uin_hdlc.Tx == 0) begin
+		while(uin_hdlc.Tx_ValidFrame == 1) begin
 			uin_hdlc.Rx = uin_hdlc.Tx;
 		end
 	endtask	
