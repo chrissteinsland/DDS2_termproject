@@ -222,9 +222,12 @@ program testPr_hdlc(
     Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
-    Transmit(8,0);                 //Normal
+    Transmit(8,0);                  //Normal
     Transmit(25,1);                 //Abort
     Transmit(69,0);                 //Normal
+    Transmit(11,0);                 //Normal
+    Transmit(44,0);                 //Normal
+    Transmit(120,0);                //Normal
     TestRxBuffer(34, 0);            //Normal
     TestRxBuffer(76, 1);            //Mismatch
     TestRxBuffer(103, 1);           //Mismatch
