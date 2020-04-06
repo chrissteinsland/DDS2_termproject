@@ -116,11 +116,11 @@ module assertions_hdlc (
   endsequence
 	
 	sequence Tx_max_ones;
-    Tx ##1 Tx ##1 Tx ##1 Tx ##1 Tx;
+    Tx[*5];
   endsequence
 	
   property zero_insertion;
-    @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:$] Tx_max_ones |=> !Tx;
+    @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:100000] Tx[*2] |=> !Tx;
   endproperty
 
   zero_insertion_Assert : assert property (zero_insertion) $display("Possible zero insertion detected");
