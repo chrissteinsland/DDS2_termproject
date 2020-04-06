@@ -460,6 +460,7 @@ program testPr_hdlc(
 
 	task Verify_Transmit_Receive(int Size);
     logic [127:0][7:0] messages;
+		int counter;
     $display("*************************************************************");
     $display("%t - Starting task Transmit to Receive", $time);
     $display("*************************************************************");
@@ -472,10 +473,16 @@ program testPr_hdlc(
 		#1000ns;
 		WriteAddress(TXSC, 2);
 		@(posedge uin_hdlc.Tx_ValidFrame);
-		while(uin_hdlc.Tx_ValidFrame == 1) begin
+		while(uin_hdlc.Tx_ValidFrame == 1 || uin_hdlc.Rx_Ready == 0) begin
 			@(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
+			if(uin_hdlc.Rx_WrBuff) begin
+				counter++;
+				assert(uin_hdlc.Rx_Data == messages[counter]) 
+      		else begin 
+        		TbErrorCnt++;
+        			$display("Received byte not what was transmitted! Expected %h, received %h at time %0t", messages[counter], uin_hdlc.Rx_Data, $time);
+			end
 		end
-		for(int i=0; i<8; i++) @(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
 		uin_hdlc.Rx = 0;
 	endtask	
 		
