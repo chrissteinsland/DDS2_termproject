@@ -152,7 +152,6 @@ program testPr_hdlc(
         $display("Error: RX overflow!");
       end 
     
-    // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
     RxCheckDataEqual(data, Size);
 
   endtask
@@ -223,7 +222,7 @@ program testPr_hdlc(
     Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
-    Transmit(13,0);                 //Normal
+    Transmit(8,0);                 //Normal
     Transmit(25,1);                 //Abort
     Transmit(69,0);                 //Normal
     TestRxBuffer(34, 0);            //Normal
