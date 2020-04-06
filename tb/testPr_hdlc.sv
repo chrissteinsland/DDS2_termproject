@@ -415,10 +415,9 @@ program testPr_hdlc(
   endtask
 
   task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
-	    	$display("Entering for loop");
     for(int i=0;i<Size;i++) begin
   		if(i<(Size-1)) 	@(posedge uin_hdlc.Tx_RdBuff);
-			else 						@(posedge uin_hdlc.Tx_Data);
+			else 						#200ns;	//@(posedge uin_hdlc.Tx_Data);
 
 			assert (uin_hdlc.Tx_Data == Data[i]) 
 	  	else begin
