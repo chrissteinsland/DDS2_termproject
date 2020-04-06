@@ -481,6 +481,7 @@ program testPr_hdlc(
       		else begin 
         		TbErrorCnt++;
         			$display("Received byte not what was transmitted! Expected %h, received %h at time %0t", messages[counter], uin_hdlc.Rx_Data, $time);
+					end
 			end
 		end
 		uin_hdlc.Rx = 0;
