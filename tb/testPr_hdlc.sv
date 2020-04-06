@@ -475,7 +475,7 @@ program testPr_hdlc(
 		@(posedge uin_hdlc.Tx_ValidFrame);
 		while(uin_hdlc.Tx_ValidFrame == 1 || uin_hdlc.Rx_Ready == 0) begin
 			@(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
-			if(uin_hdlc.Rx_WrBuff) begin
+			if(uin_hdlc.Rx_WrBuff && counter < Size) begin
 				assert(uin_hdlc.Rx_Data == messages[counter]) 
       		else begin 
         		TbErrorCnt++;
