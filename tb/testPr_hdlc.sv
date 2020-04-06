@@ -445,6 +445,13 @@ program testPr_hdlc(
 	    	$display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_DataOutBuff, Data[i]);
         TbErrorCnt++;
       end
+			if(i == Size-1) begin
+				assert (uin_hdlc.Tx_Done == 1)
+				else begin
+	    		$display("Tx_Done did not go high after buffer has been read at time %0t", $time);
+        	TbErrorCnt++;
+				end
+			end
 		end
   endtask
 
