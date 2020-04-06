@@ -444,11 +444,11 @@ program testPr_hdlc(
       WriteAddress(TXBuf, messages[i]);
     end
 
-    #100ns;
+    #1000ns;
 
     if(Abort) begin 
       WriteAddress(TXSC, 2);
-			#100ns;
+			#1000ns;
       WriteAddress(TXSC, 4);
 		end
     else begin
