@@ -457,7 +457,7 @@ program testPr_hdlc(
 
 	task Verify_FCS(logic [127:0][7:0] Data, int Size);
 		logic[15:0] FCSBytes;
-		logic[1:0][7:0] FCSBytes;
+		logic[1:0][7:0] FCSByte;
 		
   	GenerateFCSBytes(Data, Size, FCSBytes);
 		FCSByte[0] = FCSBytes[7:0];
