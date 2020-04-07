@@ -496,7 +496,7 @@ program testPr_hdlc(
 
     for(int i=0; i<128; i++) begin
       messages[i] = $urandom;
-      if(messages[i] == 0) messages[i] ) $urandom;
+      if(messages[i] == 0) messages[i] = $urandom;
 			WriteAddress(TXBuf, messages[i]);
 			if(i>125) begin
 				$display("Message number %d is: %h", i, messages[i]);
