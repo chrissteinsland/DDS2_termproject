@@ -168,7 +168,6 @@ program testPr_hdlc(
             $display("Error: No overflow during overflow test");
             TbErrorCnt++; 
           end
-    end 
     
     RxCheckDataEqual(data, Size);
 
