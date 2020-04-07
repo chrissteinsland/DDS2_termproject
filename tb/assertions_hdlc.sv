@@ -100,7 +100,7 @@ module assertions_hdlc (
     ErrCntAssertions++; 
   end
 
-  /*********************************************************
+ /*********************************************************
    *  Verify correct Rx status/control after receivin frame*
    *********************************************************/
 
@@ -119,10 +119,29 @@ module assertions_hdlc (
   endproperty
 
   RX_SC_correct_Assert : assert property (RX_SC_correct) 
-   else begin 
-    $error("RX status control register is not correct at time %0t", $time); 
-    ErrCntAssertions++; 
-   end
+  	else begin 
+    	$error("RX status control register is not correct at time %0t", $time); 
+    	ErrCntAssertions++; 
+		end	
+ 
+  /******************************************************************
+   *  Verify zero insertion and removal for transparent transmission*
+   ******************************************************************/
+
+  // Assertion 6 - zero insertion and removal for transparent transmission 
+  sequence Tx_flag;
+    !Tx ##1 Tx[*6] ##1 !Tx;	
+  endsequence
+		
+  property zero_insertion;
+    @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:$] Tx[*5] |=> $fell(Tx);
+  endproperty
+
+  zero_insertion_Assert : assert property (zero_insertion) 
+  	else begin 
+    	$error("Zeroes not inserted correctly at time %0t", $time); 
+    	ErrCntAssertions++; 
+  	end
 
   /********************************************
    *  Verify correct Idle_pattern behavior    *
@@ -156,5 +175,23 @@ module assertions_hdlc (
    		$error("Tx_AbortedTrans not asserted correctly at time %0t", $time); 
     	ErrCntAssertions++; 
    end
+
+  /************************************************
+   *  Verify that Rx_EoF works correctly	*
+   ************************************************/
+
+  // Assertion 12 - Rx_EoF is generated when a whole RX frame has been received 
+
+  property Rx_EoF_correct;
+    @(posedge Clk) disable iff(!Rst) 
+			$fell(Rx_ValidFrame) |=> Rx_EoF;
+  endproperty
+
+  Rx_EoF_correct_Assert : assert property (Rx_EoF_correct) 
+  	else begin 
+   		$error("Rx_EoF not correctly generated at time %0t", $time); 
+    	ErrCntAssertions++; 
+   end
+
 
 endmodule

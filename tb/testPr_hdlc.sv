@@ -169,7 +169,6 @@ program testPr_hdlc(
         $display("RX overflow as expected!");
       end 
     
-    // VERIFICATION ON THE DATA IN RX DATA BUFFER NEEDS TO BE DONE
     RxCheckDataEqual(data, Size);
 
   endtask
@@ -240,13 +239,18 @@ program testPr_hdlc(
     Receive( 25, 0, 0, 0, 0, 1, 0); //Drop
     Receive( 83, 0, 1, 0, 0, 0, 0); //FCSerr
     Receive( 69, 0, 0, 0, 0, 1, 0); //Drop
-    Transmit(13,0);                 //Normal
+    Transmit(8,0);                  //Normal
     Transmit(25,1);                 //Abort
+    Transmit(69,0);                 //Normal
+    Transmit(11,0);                 //Normal
+    Transmit(44,0);                 //Normal
+    Transmit(120,0);                //Normal
     TestRxBuffer(34, 0);            //Normal
     TestRxBuffer(76, 1);            //Mismatch
     TestRxBuffer(103, 1);           //Mismatch
     TestRxBuffer(126, 0);           //Normal
     TestRxBuffer(4, 1);             //Mismatch
+		Verify_Transmit_Receive(30);			//Normal
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -435,16 +439,23 @@ program testPr_hdlc(
   endtask
 
   task Verify_DataOutBuff(logic [127:0][7:0] Data, int Size);
-      @(posedge uin_hdlc.Tx_FCSDone);
-      for(int i=0;i<Size;i++) begin
-	assert (uin_hdlc.Tx_DataOutBuff == Data[i]) 
-	  else begin
-	    $display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
-	    $display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_DataOutBuff, Data[i]);
-            TbErrorCnt++;
-          end
-        @(uin_hdlc.Tx_DataOutBuff); 
+		@(posedge uin_hdlc.Tx_RdBuff);
+    for(int i=0;i<Size;i++) begin
+  	if(i) @(negedge uin_hdlc.Tx_RdBuff);
+			assert (uin_hdlc.Tx_DataOutBuff == Data[i]) 
+	  	else begin
+	    	$display("Data in Output buffer is not the same as what is being written to the controller at time %0t", $time);
+	    	$display("DataOutBuffer is %h, while it should be %h", uin_hdlc.Tx_DataOutBuff, Data[i]);
+        TbErrorCnt++;
       end
+			if(i == Size-1) begin
+				assert (uin_hdlc.Tx_Done == 1)
+				else begin
+	    		$display("Tx_Done did not go high after buffer has been read at time %0t", $time);
+        	TbErrorCnt++;
+				end
+			end
+		end
   endtask
 
   task Transmit(int Size, int Abort);
@@ -465,19 +476,44 @@ program testPr_hdlc(
     end
 
     #1000ns;
-
+		WriteAddress(TXSC, 2);
     if(Abort) begin 
-      WriteAddress(TXSC, 2);
 			#1000ns;
       WriteAddress(TXSC, 4);
 		end
-    else begin
-      WriteAddress(TXSC, 2);
-        Verify_DataOutBuff(messages, Size);
-    end
+    else Verify_DataOutBuff(messages, Size);
     #5000ns;
   endtask
 
+	task Verify_Transmit_Receive(int Size);
+    logic [127:0][7:0] messages;
+		int counter;
+    $display("*************************************************************");
+    $display("%t - Starting task Transmit to Receive", $time);
+    $display("*************************************************************");
+
+    for(int i=0; i<Size; i++) begin
+      messages[i] = $urandom;
+      WriteAddress(TXBuf, messages[i]);
+    end
+
+		#1000ns;
+		WriteAddress(TXSC, 2);
+		@(posedge uin_hdlc.Tx_ValidFrame);
+		while(uin_hdlc.Tx_ValidFrame == 1 || uin_hdlc.Rx_Ready == 0) begin
+			@(posedge uin_hdlc.Clk) uin_hdlc.Rx = uin_hdlc.Tx;
+			if(uin_hdlc.Rx_WrBuff && counter < Size) begin
+				assert(uin_hdlc.Rx_Data == messages[counter]) 
+      	else begin 
+      		TbErrorCnt++;
+        	$display("Received byte not what was transmitted! Expected %h, received %h at time %0t", messages[counter], uin_hdlc.Rx_Data, $time);
+				end
+				counter++;
+			end
+		end
+		uin_hdlc.Rx = 0;
+	endtask	
+		
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
     logic [23:0] CheckReg;
     CheckReg[15:8]  = data[1];
