@@ -485,6 +485,7 @@ program testPr_hdlc(
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
+		FCSBytes = '0;
   	GenerateFCSBytes(messages, Size, FCSBytes);
     for(int i=0; i<Size; i++) begin
       messages[i] = $urandom;
