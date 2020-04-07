@@ -82,6 +82,7 @@ program testPr_hdlc(
     GenerateFCSBytes(ReceiveData, Size, FCSBytes);
     ReceiveData[Size]   = FCSBytes[7:0];
     ReceiveData[Size+1] = FCSBytes[15:8];
+		$display("FCSBytes: %h, FCSByte[0]: %h, FCSByte[1]: %h", FCSBytes, ReceiveData[Size], ReceiveData[Size+1]); 
 
     //Enable FCS
     WriteAddress(RXSC, 8'h20);
