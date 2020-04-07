@@ -484,6 +484,20 @@ program testPr_hdlc(
     else Verify_DataOutBuff(messages, Size);
     #5000ns;
   endtask
+	
+	task Overflow_Tx_Buffer()
+    $display("*************************************************************");
+    $display("%t - Starting task Overflowing Tx Buffer", $time, );
+    $display("*************************************************************");
+
+    for(int i=0; i<128; i++) begin
+      messages[i] = $urandom;
+      WriteAddress(TXBuf, messages[i]);
+    end
+		#1000ns;
+		WriteAddress(TXSC, 2);
+		#5000ns;
+	endtask
 
 	task Verify_Transmit_Receive(int Size);
     logic [127:0][7:0] messages;
