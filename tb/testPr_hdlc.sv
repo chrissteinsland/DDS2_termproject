@@ -498,6 +498,7 @@ program testPr_hdlc(
       messages[i] = $urandom;
       WriteAddress(TXBuf, messages[i]);
 			if(i>125) begin
+				$display("Message number %d is: %h", i, messages[i]);
 				assert(uin_hdlc.Tx_Full == 1) 
       	else begin 
       		TbErrorCnt++;
