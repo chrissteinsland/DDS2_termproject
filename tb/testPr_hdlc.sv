@@ -458,17 +458,16 @@ program testPr_hdlc(
 	task Verify_FCS(logic [127:0][7:0] Data, int Size);
 		logic[15:0] FCSBytes;
 		logic[1:0][7:0] FCSByte;
-		
   	GenerateFCSBytes(Data, Size, FCSBytes);
 		FCSByte[0] = FCSBytes[7:0];
 		FCSByte[1] = FCSBytes[15:8];
-
 		@(uin_hdlc.Tx_Data);
 		for(int i=0;i<2;i++) begin
 			@(uin_hdlc.Tx_Data);
 			assert (uin_hdlc.Tx_Data == FCSByte[i]) $display("FCS correct at time %0t", $time);
 				else begin
 	    		$display("FCS not correct at time %0t", $time);
+	    		$display("Data in buffer was %h, expected %h", uin_hdlc.Tx_Data, FCSByte[i]);
         	TbErrorCnt++;
 				end	
 		end
