@@ -495,8 +495,13 @@ program testPr_hdlc(
     for(int i=0; i<128; i++) begin
       messages[i] = $urandom;
       WriteAddress(TXBuf, messages[i]);
-    	$display("Sending %h to buffer at time %t", messages[i], $time);
-
+			if(i>124) begin
+				assert(uin_hdlc.Tx_Full == 1) 
+      	else begin 
+      		TbErrorCnt++;
+        	$display("Tx_Full not correctly asserted at time %t", $time);
+				end
+			end
     end
 		#1000ns;
 		WriteAddress(TXSC, 2);
