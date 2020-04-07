@@ -509,7 +509,7 @@ program testPr_hdlc(
     end
 		#1000ns;
 		WriteAddress(TXSC, 2);
-		#6000ns;
+		@(posedge uin_hdlc.Tx_Done);
 	endtask
 
 	task Verify_Transmit_Receive(int Size);
