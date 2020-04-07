@@ -162,12 +162,13 @@ program testPr_hdlc(
     ReadAddress(RXSC, rx_status);
 
     // Check overflow
-    assert(rx_status[4] == 0)
-        $display("Error: No overflow during overflow test");
-        TbErrorCnt++; 
-      else begin
-        $display("RX overflow as expected!");
-      end 
+    assert(rx_status[4])
+            $display("RX overflow as expected!");
+         else begin
+            $display("Error: No overflow during overflow test");
+            TbErrorCnt++; 
+          end
+    end 
     
     RxCheckDataEqual(data, Size);
 
