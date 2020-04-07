@@ -490,7 +490,9 @@ program testPr_hdlc(
       WriteAddress(TXBuf, messages[i]);
     end
 		FCSBytes = '0;
+    $display("FCSBytes: %h", FCSBytes);
   	GenerateFCSBytes(messages, Size, FCSBytes);
+    $display("FCSBytes: %h", FCSBytes);
     
     #1000ns;
 		WriteAddress(TXSC, 2);
