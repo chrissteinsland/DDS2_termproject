@@ -201,7 +201,7 @@ module assertions_hdlc (
 
   property Rx_Ready_buffer_can_be_read;
     @(posedge Clk) disable iff(!Rst) 
-			Rx_Ready |-> !$isunknown(Rx_RdBuff);
+			Rx_Ready |-> !$isunknown(Rx_DataBuffOut);
   endproperty
 
   Rx_Ready_buffer_can_be_read_Assert : assert property (Rx_Ready_buffer_can_be_read) 
