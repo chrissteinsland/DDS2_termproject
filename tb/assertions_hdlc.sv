@@ -193,5 +193,20 @@ module assertions_hdlc (
     	ErrCntAssertions++; 
    end
 
+  /***********************************************************************
+   *  Rx_Ready should indicate byte(s) in Rx buffer is ready to be read *
+   ***********************************************************************/
 
+  // Assertion 15
+
+  property Rx_Ready;
+    @(posedge Clk) disable iff(!Rst) 
+			Rx_Ready |-> !Rx_WrBuff;
+  endproperty
+
+  Rx_Ready_Assert : assert property (Rx_Ready) 
+  	else begin 
+   		$error("Rx_Ready was high, but should not be at time %0t", $time); 
+    	ErrCntAssertions++; 
+   end
 endmodule
