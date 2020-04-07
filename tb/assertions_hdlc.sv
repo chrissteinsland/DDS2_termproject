@@ -187,7 +187,7 @@ module assertions_hdlc (
 			$fell(Rx_ValidFrame) |=> Rx_EoF;
   endproperty
 
-  Rx_EoF_correct_Assert : assert property (Rx_EoF_correct) $display("Rx_EoF generated");
+  Rx_EoF_correct_Assert : assert property (Rx_EoF_correct) 
   	else begin 
    		$error("Rx_EoF not correctly generated at time %0t", $time); 
     	ErrCntAssertions++; 
