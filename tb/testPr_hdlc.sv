@@ -462,21 +462,20 @@ program testPr_hdlc(
 		FCSBytes = '0;
 		FCSByte[0] = '0;
 		FCSByte[1] = '0;
-		$display("FCSBytes: %h, FCSByte[0]: %h, FCSByte[1]: %h", FCSBytes, FCSByte[0], FCSByte[1]); 
  		GenerateFCSBytes(messages, Size, FCSBytes);
-
 		FCSByte[0] = FCSBytes[7:0];
 		FCSByte[1] = FCSBytes[15:8];
-		$display("FCSBytes: %h, FCSByte[0]: %h, FCSByte[1]: %h", FCSBytes, FCSByte[0], FCSByte[1]); 
 		@(uin_hdlc.Tx_Data);
 		for(int i=0;i<2;i++) begin
 			@(uin_hdlc.Tx_Data);
+			if(!$isunknown(FCSBytes)) begin
 			assert (uin_hdlc.Tx_Data == FCSByte[i]) $display("FCS correct at time %0t", $time);
 				else begin
 	    		$display("FCS not correct at time %0t", $time);
 	    		$display("Data in buffer was %h, expected %h", uin_hdlc.Tx_Data, FCSByte[i]);
         	TbErrorCnt++;
-				end	
+				end
+			end
 		end
 	endtask
 
@@ -543,30 +542,20 @@ program testPr_hdlc(
     logic [23:0] CheckReg;
     CheckReg[15:8]  = data[1];
     CheckReg[7:0]   = data[0];
-		$display("CheckReg: %h", CheckReg); 
-		$display("message: %h", data[1]); 
     for(int i = 2; i < size+2; i++) begin
       CheckReg[23:16] = data[i];
       for(int j = 0; j < 8; j++) begin
         if(CheckReg[0]) begin
-		$display("CheckReg: %h", CheckReg); 
           CheckReg[0]    = CheckReg[0] ^ 1;
-		$display("CheckReg: %h", CheckReg); 
           CheckReg[1]    = CheckReg[1] ^ 1;
-		$display("CheckReg: %h", CheckReg); 
           CheckReg[13:2] = CheckReg[13:2];
-		$display("CheckReg: %h", CheckReg); 
           CheckReg[14]   = CheckReg[14] ^ 1;
-		$display("CheckReg: %h", CheckReg); 
           CheckReg[15]   = CheckReg[15];
-		$display("CheckReg: %h", CheckReg); 
           CheckReg[16]   = CheckReg[16] ^1;
-		$display("CheckReg: %h", CheckReg); 
         end
         CheckReg = CheckReg >> 1;
       end
     end
-		$display("CheckReg: %h", CheckReg); 
     FCSBytes = CheckReg;
   endtask
 
