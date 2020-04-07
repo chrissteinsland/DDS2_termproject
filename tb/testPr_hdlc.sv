@@ -487,6 +487,7 @@ program testPr_hdlc(
   endtask
 	
 	task Overflow_Tx_Buffer();
+		logic[127:0][7:0] messages;
     $display("*************************************************************");
     $display("%t - Starting task Overflowing Tx Buffer", $time, );
     $display("*************************************************************");
