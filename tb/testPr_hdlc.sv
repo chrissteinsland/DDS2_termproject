@@ -460,6 +460,9 @@ program testPr_hdlc(
 		logic[1:0][7:0] FCSByte;
 		logic[15:0] FCSBytes;
 		$display("FCSBytes: %h, FCSByte[0]: %h, FCSByte[1]: %h", FCSBytes, FCSByte[0], FCSByte[1]); 
+		FCSBytes = '0;
+		FCSByte[0] = '0;
+		FCSByte[1] = '0;
 
  		GenerateFCSBytes(messages, Size, FCSBytes);
 
