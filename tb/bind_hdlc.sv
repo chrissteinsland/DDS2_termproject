@@ -26,6 +26,7 @@ module bind_hdlc ();
     .Rx_Drop          (uin_hdlc.Rx_Drop),
     .Rx_FCSen         (uin_hdlc.Rx_FCSen),
     .Rx_FrameError    (uin_hdlc.Rx_FrameError),
+    .Rx_DataBuffOut   (uin_hdlc.Rx_DataBuffOut),
     .Tx               (uin_hdlc.Tx),
     .Tx_DataOutBuff   (uin_hdlc.Tx_DataOutBuff),
     .Tx_DataArray     (uin_hdlc.Tx_DataArray),
