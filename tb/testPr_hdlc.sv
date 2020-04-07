@@ -73,7 +73,6 @@ program testPr_hdlc(
 	endgroup
 
 	hdlc_gc hdlc_gc_inst;
-	hdlc_gc_inst= new();
   /****************************************************************************
    *                                                                          *
    *                               Student code                               *
@@ -275,7 +274,9 @@ program testPr_hdlc(
     $display("*************************************************************");
 
     Init();
-    //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
+		hdlc_gc_inst = new();
+    
+		//Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
     Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
     Receive(126, 0, 0, 0, 1, 0, 0); //Overflow
