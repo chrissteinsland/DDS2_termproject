@@ -543,6 +543,7 @@ program testPr_hdlc(
     logic [23:0] CheckReg;
     CheckReg[15:8]  = data[1];
     CheckReg[7:0]   = data[0];
+		$display("message: %h", data[1]); 
     for(int i = 2; i < size+2; i++) begin
       CheckReg[23:16] = data[i];
       for(int j = 0; j < 8; j++) begin
