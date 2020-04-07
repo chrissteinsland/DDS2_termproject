@@ -549,12 +549,19 @@ program testPr_hdlc(
       CheckReg[23:16] = data[i];
       for(int j = 0; j < 8; j++) begin
         if(CheckReg[0]) begin
+		$display("CheckReg: %h", CheckReg); 
           CheckReg[0]    = CheckReg[0] ^ 1;
+		$display("CheckReg: %h", CheckReg); 
           CheckReg[1]    = CheckReg[1] ^ 1;
+		$display("CheckReg: %h", CheckReg); 
           CheckReg[13:2] = CheckReg[13:2];
+		$display("CheckReg: %h", CheckReg); 
           CheckReg[14]   = CheckReg[14] ^ 1;
+		$display("CheckReg: %h", CheckReg); 
           CheckReg[15]   = CheckReg[15];
+		$display("CheckReg: %h", CheckReg); 
           CheckReg[16]   = CheckReg[16] ^1;
+		$display("CheckReg: %h", CheckReg); 
         end
         CheckReg = CheckReg >> 1;
       end
