@@ -75,7 +75,7 @@ program testPr_hdlc(
 			}
 		endgroup
 
-		function cover();
+		function new();
 			Rx_cg = new;
 			Tx_cg = new;
 		endfunction
@@ -282,7 +282,7 @@ program testPr_hdlc(
     $display("*************************************************************");
 
     Init();
-		coverage_init = cover();
+		coverage_init = new();
     //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
     Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
