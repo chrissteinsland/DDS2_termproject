@@ -195,9 +195,9 @@ module assertions_hdlc (
     	ErrCntAssertions++; 
    end
 
-  /***********************************************************************
-   *  Rx_Ready should indicate byte(s) in Rx buffer is ready to be read *
-   ***********************************************************************/
+  /**********************************************************
+   *  Rx_Ready should indicate byte(s)  is ready to be read *
+   **********************************************************/
 
   // Assertion 15
 
