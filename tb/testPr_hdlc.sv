@@ -456,10 +456,7 @@ program testPr_hdlc(
 		end
   endtask
 
-	task Verify_FCS(logic [127:0][7:0] Data, int Size);
-		logic[15:0] FCSBytes;
-		logic[1:0][7:0] FCSByte;
-  	GenerateFCSBytes(Data, Size, FCSBytes);
+	task Verify_FCS(logic[15:0] FCSBytes);
 		FCSByte[0] = FCSBytes[7:0];
 		FCSByte[1] = FCSBytes[15:8];
 		$display("FCSBytes: %h, FCSByte[0]: %h, FCSByte[1]: %h", FCSBytes, FCSByte[0], FCSByte[1]); 
@@ -478,6 +475,7 @@ program testPr_hdlc(
   task Transmit(int Size, int Abort);
     string msg;
     logic [127:0][7:0] messages;
+		logic [15:0] FCSBytes;
     if(Abort)
       msg = "- Abort";
     else
@@ -486,6 +484,7 @@ program testPr_hdlc(
     $display("%t - Starting task Transmit %s", $time, msg);
     $display("*************************************************************");
 
+  	GenerateFCSBytes(Data, Size, FCSBytes);
     for(int i=0; i<Size; i++) begin
       messages[i] = $urandom;
       WriteAddress(TXBuf, messages[i]);
@@ -499,7 +498,7 @@ program testPr_hdlc(
 		end
     else begin
 			Verify_DataOutBuff(messages, Size);
-			Verify_FCS(messages, Size);
+			Verify_FCS(FCSBytes);
 		end
     #5000ns;
   endtask
