@@ -455,6 +455,25 @@ program testPr_hdlc(
 		end
   endtask
 
+	task Verify_FCS(logic [127:0][7:0] Data, int Size);
+		logic[15:0] FCSBytes;
+		logic[1:0][7:0] FCSBytes;
+		
+  	GenerateFCSBytes(Data, Size, FCSBytes);
+		FCSByte[0] = FCSBytes[7:0];
+		FCSByte[1] = FCSBytes[15:8];
+
+		@(uin_hdlc.Tx_Data);
+		for(int i=0;i<2;i++) begin
+			@(uin_hdlc.Tx_Data);
+			assert (uin_hdlc.Tx_Data == FCSByte[i]) $display("FCS correct at time %0t", $time);
+				else begin
+	    		$display("FCS not correct at time %0t", $time);
+        	TbErrorCnt++;
+				end	
+		end
+	endtask
+
   task Transmit(int Size, int Abort);
     string msg;
     logic [127:0][7:0] messages;
@@ -468,7 +487,6 @@ program testPr_hdlc(
 
     for(int i=0; i<Size; i++) begin
       messages[i] = $urandom;
-      //$display("Sent to buffer: %h", messages[i]);
       WriteAddress(TXBuf, messages[i]);
     end
 
@@ -478,7 +496,10 @@ program testPr_hdlc(
 			#1000ns;
       WriteAddress(TXSC, 4);
 		end
-    else Verify_DataOutBuff(messages, Size);
+    else begin
+			Verify_DataOutBuff(messages, Size);
+			Verify_FCS(messages, Size);
+		end
     #5000ns;
   endtask
 
