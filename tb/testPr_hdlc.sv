@@ -461,6 +461,7 @@ program testPr_hdlc(
   	GenerateFCSBytes(Data, Size, FCSBytes);
 		FCSByte[0] = FCSBytes[7:0];
 		FCSByte[1] = FCSBytes[15:8];
+		$display("FCSBytes: %h, FCSByte[0]: %h, FCSByte[1]: %h", FCSBytes, FCSByte[0], FCSByte[1]); 
 		@(uin_hdlc.Tx_Data);
 		for(int i=0;i<2;i++) begin
 			@(uin_hdlc.Tx_Data);
