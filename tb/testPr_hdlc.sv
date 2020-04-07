@@ -24,7 +24,8 @@ program testPr_hdlc(
   int TbErrorCnt;
   enum int {TXSC, TXBuf, RXSC, RXBuf, RXLen} address; 
 
-	covergroup hdlc_cg() @(posedge uin_hdlc.Clk);
+
+	covergroup hdlc_cg @(posedge uin_hdlc.Clk);
 			Rx_Overflow: coverpoint uin_hdlc.Rx_Overflow {
 				bins No_Rx_Overflow = {0};
 				bins Rx_Overflow = {1};
