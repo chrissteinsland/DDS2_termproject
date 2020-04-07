@@ -25,7 +25,7 @@ program testPr_hdlc(
   enum int {TXSC, TXBuf, RXSC, RXBuf, RXLen} address; 
 
 
-	class hdlc_cover;
+//	class hdlc_cover;
 	covergroup hdlc_cg @(posedge uin_hdlc.Clk);
 			Rx_Overflow: coverpoint uin_hdlc.Rx_Overflow {
 				bins No_Rx_Overflow = {0};
@@ -73,9 +73,9 @@ program testPr_hdlc(
 				bins Tx_AbortedTrans = {1};
 			}
 	endgroup
-	endclass
+//	endclass
 
-	hdlc_cover hdlc_gc_inst;
+	hdlc_gc hdlc_gc_inst;
   /****************************************************************************
    *                                                                          *
    *                               Student code                               *
