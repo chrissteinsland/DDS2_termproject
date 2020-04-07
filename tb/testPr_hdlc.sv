@@ -245,7 +245,6 @@ program testPr_hdlc(
     Transmit(11,0);                 //Normal
     Transmit(44,0);                 //Normal
     Transmit(120,0);                //Normal
-    Transmit(128,0);                //Full Buffer
     TestRxBuffer(34, 0);            //Normal
     TestRxBuffer(76, 1);            //Mismatch
     TestRxBuffer(103, 1);           //Mismatch
