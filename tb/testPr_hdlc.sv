@@ -485,7 +485,7 @@ program testPr_hdlc(
       WriteAddress(TXSC, 4);
 		end
     else Verify_DataOutBuff(messages, Size);
-    #6000ns;
+		@(posedge uin_hdlc.Tx_Done);
   endtask
 	
 	task Overflow_Tx_Buffer();
