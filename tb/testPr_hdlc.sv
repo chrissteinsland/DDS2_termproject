@@ -251,8 +251,10 @@ program testPr_hdlc(
     TestRxBuffer(103, 1);           //Mismatch
     TestRxBuffer(126, 0);           //Normal
     TestRxBuffer(4, 1);             //Mismatch
-		Verify_Transmit_Receive(70);			//Normal
-		//Overflow_Tx_Buffer();	
+		Verify_Transmit_Receive(70);		//Normal
+		Overflow_Tx_Buffer();						//Full Buffer	
+		Overflow_Tx_Buffer();						//Full Buffer
+		Overflow_Tx_Buffer();						//Full Buffer
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
@@ -475,13 +477,6 @@ program testPr_hdlc(
       messages[i] = $urandom;
       //$display("Sent to buffer: %h", messages[i]);
       WriteAddress(TXBuf, messages[i]);
-			if(i>125) begin
-				assert(uin_hdlc.Tx_Full == 1) 
-      	else begin 
-      		TbErrorCnt++;
-        	$display("Tx_Full not correctly asserted at time %t", $time);
-				end
-			end
     end
 
     #1000ns;
@@ -494,7 +489,7 @@ program testPr_hdlc(
     #5000ns;
   endtask
 	
-/*	task Overflow_Tx_Buffer();
+	task Overflow_Tx_Buffer();
 		logic[127:0][7:0] messages;
     $display("*************************************************************");
     $display("%t - Starting task Overflowing Tx Buffer", $time, );
@@ -503,13 +498,19 @@ program testPr_hdlc(
     for(int i=0; i<128; i++) begin
       messages[i] = $urandom;
       WriteAddress(TXBuf, messages[i]);
-			
+			if(i>125) begin
+				assert(uin_hdlc.Tx_Full == 1) 
+      	else begin 
+      		TbErrorCnt++;
+        	$display("Tx_Full not correctly asserted at time %t", $time);
+				end
+			end
     end
 		#1000ns;
 		WriteAddress(TXSC, 2);
 		#5000ns;
 	endtask
-*/
+
 	task Verify_Transmit_Receive(int Size);
     logic [127:0][7:0] messages;
 		int counter;
