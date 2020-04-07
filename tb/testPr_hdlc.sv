@@ -72,7 +72,8 @@ program testPr_hdlc(
 			}
 	endgroup
 
-	hdlc_gc hdlc_gc_inst = new();
+	hdlc_gc hdlc_gc_inst;
+	hdlc_gc_inst= new();
   /****************************************************************************
    *                                                                          *
    *                               Student code                               *
