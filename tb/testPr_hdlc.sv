@@ -250,7 +250,8 @@ program testPr_hdlc(
     TestRxBuffer(103, 1);           //Mismatch
     TestRxBuffer(126, 0);           //Normal
     TestRxBuffer(4, 1);             //Mismatch
-		Verify_Transmit_Receive(30);			//Normal
+		Verify_Transmit_Receive(70);			//Normal
+		Overflow_Tx_Buffer();	
     $display("*************************************************************");
     $display("%t - Finishing Test Program", $time);
     $display("*************************************************************");
