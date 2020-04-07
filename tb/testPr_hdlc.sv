@@ -24,8 +24,7 @@ program testPr_hdlc(
   int TbErrorCnt;
   enum int {TXSC, TXBuf, RXSC, RXBuf, RXLen} address; 
 
-	class hdlc_cg;
-		covergroup Rx_cg @(posedge uin_hdlc.Clk);
+	covergroup hdlc_cg() @(posedge uin_hdlc.Clk);
 			Rx_Overflow: coverpoint uin_hdlc.Rx_Overflow {
 				bins No_Rx_Overflow = {0};
 				bins Rx_Overflow = {1};
@@ -54,9 +53,7 @@ program testPr_hdlc(
 				bins No_Rx_EoF = {0};
 				bins Rx_EoF = {1};
 			}
-		endgroup
 
-		covergroup Tx_cg @(posedge uin_hdlc.Clk);
 			Tx_ValidFrame: coverpoint uin_hdlc.Tx_ValidFrame {
 				bins No_Tx_ValidFrame = {0};
 				bins Tx_ValidFrame = {1};
@@ -73,14 +70,9 @@ program testPr_hdlc(
 				bins No_Tx_AbortedTrans = {0};
 				bins Tx_AbortedTrans = {1};
 			}
-		endgroup
+	endgroup
 
-		function new();
-			Rx_cg = new;
-			Tx_cg = new;
-		endfunction
-	endclass
-	hdlc_gc gc_init = new();
+	hdlc_gc hdlc_gc_inst = new();
   /****************************************************************************
    *                                                                          *
    *                               Student code                               *
