@@ -24,7 +24,7 @@ program testPr_hdlc(
   int TbErrorCnt;
   enum int {TXSC, TXBuf, RXSC, RXBuf, RXLen} address; 
 
-	class coverage;
+	class hdlc_cg;
 		covergroup Rx_cg @(posedge uin_hdlc.Clk);
 			Rx_Overflow: coverpoint uin_hdlc.Rx_Overflow {
 				bins No_Rx_Overflow = {0};
@@ -80,7 +80,7 @@ program testPr_hdlc(
 			Tx_cg = new;
 		endfunction
 	endclass
-	coverage coverage_init;
+	hdlc_gc gc_init = new();
   /****************************************************************************
    *                                                                          *
    *                               Student code                               *
@@ -282,7 +282,6 @@ program testPr_hdlc(
     $display("*************************************************************");
 
     Init();
-		coverage_init = new();
     //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
     Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
