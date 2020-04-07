@@ -485,7 +485,7 @@ program testPr_hdlc(
       WriteAddress(TXSC, 4);
 		end
     else Verify_DataOutBuff(messages, Size);
-    #5000ns;
+    #6000ns;
   endtask
 	
 	task Overflow_Tx_Buffer();
@@ -508,7 +508,7 @@ program testPr_hdlc(
     end
 		#1000ns;
 		WriteAddress(TXSC, 2);
-		#5000ns;
+		#6000ns;
 	endtask
 
 	task Verify_Transmit_Receive(int Size);
@@ -538,6 +538,7 @@ program testPr_hdlc(
 			end
 		end
 		uin_hdlc.Rx = 0;
+		#6000ns;
 	endtask	
 		
   task GenerateFCSBytes(logic [127:0][7:0] data, int size, output logic[15:0] FCSBytes);
