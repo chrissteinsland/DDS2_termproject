@@ -71,6 +71,10 @@ program testPr_hdlc(
 				bins No_Tx_AbortedTrans = {0};
 				bins Tx_AbortedTrans = {1};
 			}
+			Tx_zero_insertions: coverpoint uin_hdlc.Tx_Data {
+				bins No_Tx_zero_insertions = default;
+				bins Tx_zero_insertions = {'b??111111, 'b?111111?, 'b111111??};
+			}
 	endgroup
 	hdlc_cg hdlc_cg_inst;
   /****************************************************************************
