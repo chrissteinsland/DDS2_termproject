@@ -184,7 +184,7 @@ module assertions_hdlc (
 
   property Rx_EoF_correct;
     @(posedge Clk) disable iff(!Rst) 
-			Rx_flag ##[48:1260] Rx_flag |-> ##[0:10] $rose(Rx_EoF) ;
+			$fell(Rx_ValidFrame) |=> Rx_EoF;
   endproperty
 
   Rx_EoF_correct_Assert : assert property (Rx_EoF_correct) $display("Rx_EoF generated");
