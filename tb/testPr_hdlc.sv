@@ -73,9 +73,7 @@ program testPr_hdlc(
 			}
 			Tx_zero_insertions: coverpoint uin_hdlc.Tx_Data {
 				bins No_Tx_zero_insertions = default;
-				bins Tx_zero_insertions1 = {8'bxx111111}; 
-				bins Tx_zero_insertions2 = {8'bx111111x}; 
-				bins Tx_zero_insertions3 = {8'b111111xx}; 
+				bins Tx_zero_insertions = {'h3f, 'h7f, 'hff, 'h7e, 'hfc, 'hfe}; 
 			}
 	endgroup
 	hdlc_cg hdlc_cg_inst;
