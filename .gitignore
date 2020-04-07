@@ -1,4 +1,5 @@
 tb/transcript
+tb/coverage_rep.txt
 tb/vsim.wlf
 tb/wlft*
 tb/work/
