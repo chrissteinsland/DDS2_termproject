@@ -23,6 +23,64 @@ program testPr_hdlc(
   
   int TbErrorCnt;
   enum int {TXSC, TXBuf, RXSC, RXBuf, RXLen} address; 
+
+	class coverage;
+		covergroup Rx_cg @(posedge uin_hdlc.Clk);
+			Rx_Overflow: coverpoint uin_hdlc.Rx_Overflow {
+				bins No_Rx_Overflow = {0};
+				bins Rx_Overflow = {1};
+			}
+			Rx_Drop: coverpoint uin_hdlc.Rx_Drop {
+				bins No_Rx_Drop = {0};
+				bins Rx_Drop = {1};
+			}
+			Rx_AbortDetect: coverpoint uin_hdlc.Rx_AbortDetect {
+				bins No_Rx_AbortDetect = {0};
+				bins Rx_AbortDetect = {1};
+			}
+			Rx_FlagDetect: coverpoint uin_hdlc.Rx_FlagDetect {
+				bins No_Rx_FlagDetect = {0};
+				bins Rx_FlagDetect = {1};
+			}
+			Rx_FrameError: coverpoint uin_hdlc.Rx_FrameError {
+				bins No_Rx_FrameError = {0};
+				bins Rx_FrameError = {1};
+			}
+			Rx_FCSerr: coverpoint uin_hdlc.Rx_FCSerr {
+				bins No_Rx_FCSerr = {0};
+				bins Rx_FCSerr = {1};
+			}
+			Rx_EoF: coverpoint uin_hdlc.Rx_EoF {
+				bins No_Rx_EoF = {0};
+				bins Rx_EoF = {1};
+			}
+		endgroup
+
+		covergroup Tx_cg @(posedge uin_hdlc.Clk);
+			Tx_ValidFrame: coverpoint uin_hdlc.Tx_ValidFrame {
+				bins No_Tx_ValidFrame = {0};
+				bins Tx_ValidFrame = {1};
+			}
+			Tx_Done: coverpoint uin_hdlc.Tx_Done {
+				bins No_Tx_Done = {0};
+				bins Tx_Done = {1};
+			}
+			Tx_Full: coverpoint uin_hdlc.Tx_Full {
+				bins No_Tx_Full = {0};
+				bins Tx_Full = {1};
+			}
+			Tx_AbortedTrans: coverpoint uin_hdlc.Tx_AbortedTrans {
+				bins No_Tx_AbortedTrans = {0};
+				bins Tx_AbortedTrans = {1};
+			}
+		endgroup
+
+		function cover();
+			Rx_cg = new;
+			Tx_cg = new;
+		endfunction
+	endclass
+	coverage coverage_init;
   /****************************************************************************
    *                                                                          *
    *                               Student code                               *
@@ -224,7 +282,7 @@ program testPr_hdlc(
     $display("*************************************************************");
 
     Init();
-
+		coverage_init = cover();
     //Receive: Size, Abort, FCSerr, NonByteAligned, Overflow, Drop, SkipRead
     Receive( 10, 0, 0, 0, 0, 0, 0); //Normal
     Receive( 40, 1, 0, 0, 0, 0, 0); //Abort
