@@ -176,4 +176,22 @@ module assertions_hdlc (
     	ErrCntAssertions++; 
    end
 
+  /************************************************
+   *  Verify that Rx_EoF works correctly	*
+   ************************************************/
+
+  // Assertion 12 - Rx_EoF is generated when a whole RX frame has been received 
+
+  property Rx_EoF_correct;
+    @(posedge Clk) disable iff(!Rst) 
+			Rx_flag ##[48:1260] Rx_flag |-> ##[0:10] $rose(Rx_EoF) ;
+  endproperty
+
+  Rx_EoF_correct_Assert : assert property (Rx_EoF_correct) $display("Rx_EoF generated");
+  	else begin 
+   		$error("Rx_EoF not correctly generated at time %0t", $time); 
+    	ErrCntAssertions++; 
+   end
+
+
 endmodule
