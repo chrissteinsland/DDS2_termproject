@@ -199,14 +199,14 @@ module assertions_hdlc (
 
   // Assertion 15
 
-  property Rx_Ready;
+  property Rx_Ready_buffer_can_be_read;
     @(posedge Clk) disable iff(!Rst) 
-			Rx_Ready |-> !Rx_WrBuff;
+			Rx_Ready |-> !$isunknown(Rx_RdBuff);
   endproperty
 
-  Rx_Ready_Assert : assert property (Rx_Ready) 
+  Rx_Ready_buffer_can_be_read_Assert : assert property (Rx_Ready_buffer_can_be_read) 
   	else begin 
-   		$error("Rx_Ready was high, but should not be at time %0t", $time); 
+   		$error("Rx buffer contains unknown values, when Rx_Ready was high at time %0t", $time); 
     	ErrCntAssertions++; 
    end
 endmodule
