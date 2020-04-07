@@ -495,6 +495,8 @@ program testPr_hdlc(
     for(int i=0; i<128; i++) begin
       messages[i] = $urandom;
       WriteAddress(TXBuf, messages[i]);
+    	$display("Sending %h to buffer at time %t", messages[i], $time);
+
     end
 		#1000ns;
 		WriteAddress(TXSC, 2);
