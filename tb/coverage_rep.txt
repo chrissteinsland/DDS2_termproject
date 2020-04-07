@@ -3,23 +3,23 @@ COVERGROUP COVERAGE:
 Covergroup                                             Metric       Goal    Status                Persistent Memory   Transient Memory     Peak Transient    PeakTransMemory 
                                                                                                                                                 Memory              Time  
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- TYPE /test_hdlc/u_testPr/hdlc_cg                      100.0%        100    Covered                           8.7KB              2.4KB              2.6KB            1000 ns 
-    covered/total bins:                                    23         23                                   8.7KB              2.4KB              2.6KB            1000 ns 
-    missing/total bins:                                     0         23                                   8.7KB              2.4KB              2.6KB            1000 ns 
-    % Hit:                                             100.0%        100                                   8.7KB              2.4KB              2.6KB            1000 ns 
-    Coverpoint hdlc_cg::Rx_Overflow                    100.0%        100    Covered                            288B               224B               224B            1250 ns 
+ TYPE /test_hdlc/u_testPr/hdlc_cg                      100.0%        100    Covered                           8.7KB              2.4KB              3.0KB            1000 ns 
+    covered/total bins:                                    23         23                                   8.7KB              2.4KB              3.0KB            1000 ns 
+    missing/total bins:                                     0         23                                   8.7KB              2.4KB              3.0KB            1000 ns 
+    % Hit:                                             100.0%        100                                   8.7KB              2.4KB              3.0KB            1000 ns 
+    Coverpoint hdlc_cg::Rx_Overflow                    100.0%        100    Covered                            288B               256B               256B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
-    Coverpoint hdlc_cg::Rx_Drop                        100.0%        100    Covered                            288B               208B               208B            1250 ns 
+    Coverpoint hdlc_cg::Rx_Drop                        100.0%        100    Covered                            288B               240B               240B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
-    Coverpoint hdlc_cg::Rx_AbortDetect                 100.0%        100    Covered                            288B               240B               240B            1250 ns 
+    Coverpoint hdlc_cg::Rx_AbortDetect                 100.0%        100    Covered                            288B               208B               208B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
-    Coverpoint hdlc_cg::Rx_FlagDetect                  100.0%        100    Covered                            288B               240B               240B            1250 ns 
+    Coverpoint hdlc_cg::Rx_FlagDetect                  100.0%        100    Covered                            288B               208B               208B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
@@ -51,34 +51,34 @@ Covergroup                                             Metric       Goal    Stat
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
-    Coverpoint hdlc_cg::Tx_zero_insertions             100.0%        100    Covered                            280B               144B               144B            1250 ns 
+    Coverpoint hdlc_cg::Tx_zero_insertions             100.0%        100    Covered                            280B               496B               496B            1250 ns 
         covered/total bins:                                 1          1                                      na                 na                 na                 na 
         missing/total bins:                                 0          1                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
  Covergroup instance \/test_hdlc/u_testPr/hdlc_cg_inst  
-                                                       100.0%        100    Covered                           8.7KB              2.4KB              2.6KB            1000 ns 
-    covered/total bins:                                    23         23                                   8.7KB              2.4KB              2.6KB            1000 ns 
-    missing/total bins:                                     0         23                                   8.7KB              2.4KB              2.6KB            1000 ns 
-    % Hit:                                             100.0%        100                                   8.7KB              2.4KB              2.6KB            1000 ns 
-    Coverpoint Rx_Overflow                             100.0%        100    Covered                            288B               224B               224B            1250 ns 
+                                                       100.0%        100    Covered                           8.7KB              2.4KB              3.0KB            1000 ns 
+    covered/total bins:                                    23         23                                   8.7KB              2.4KB              3.0KB            1000 ns 
+    missing/total bins:                                     0         23                                   8.7KB              2.4KB              3.0KB            1000 ns 
+    % Hit:                                             100.0%        100                                   8.7KB              2.4KB              3.0KB            1000 ns 
+    Coverpoint Rx_Overflow                             100.0%        100    Covered                            288B               256B               256B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
         bin No_Rx_Overflow                              20756          1    Covered                              na                 na                 na                 na 
         bin Rx_Overflow                                 26398          1    Covered                              na                 na                 na                 na 
-    Coverpoint Rx_Drop                                 100.0%        100    Covered                            288B               208B               208B            1250 ns 
+    Coverpoint Rx_Drop                                 100.0%        100    Covered                            288B               240B               240B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
         bin No_Rx_Drop                                  47152          1    Covered                              na                 na                 na                 na 
         bin Rx_Drop                                         2          1    Covered                              na                 na                 na                 na 
-    Coverpoint Rx_AbortDetect                          100.0%        100    Covered                            288B               240B               240B            1250 ns 
+    Coverpoint Rx_AbortDetect                          100.0%        100    Covered                            288B               208B               208B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
         bin No_Rx_AbortDetect                           47141          1    Covered                              na                 na                 na                 na 
         bin Rx_AbortDetect                                 13          1    Covered                              na                 na                 na                 na 
-    Coverpoint Rx_FlagDetect                           100.0%        100    Covered                            288B               240B               240B            1250 ns 
+    Coverpoint Rx_FlagDetect                           100.0%        100    Covered                            288B               208B               208B            1250 ns 
         covered/total bins:                                 2          2                                      na                 na                 na                 na 
         missing/total bins:                                 0          2                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
@@ -126,13 +126,13 @@ Covergroup                                             Metric       Goal    Stat
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
         bin No_Tx_AbortedTrans                          47143          1    Covered                              na                 na                 na                 na 
         bin Tx_AbortedTrans                                11          1    Covered                              na                 na                 na                 na 
-    Coverpoint Tx_zero_insertions                      100.0%        100    Covered                            280B               144B               144B            1250 ns 
+    Coverpoint Tx_zero_insertions                      100.0%        100    Covered                            280B               496B               496B            1250 ns 
         covered/total bins:                                 1          1                                      na                 na                 na                 na 
         missing/total bins:                                 0          1                                      na                 na                 na                 na 
         % Hit:                                         100.0%        100                                      na                 na                 na                 na 
-        bin Tx_zero_insertions1                         47154          1    Covered                              na                 na                 na                 na 
-        default bin No_Tx_zero_insertions                   0               ZERO                                 na                 na                 na                 na 
+        bin Tx_zero_insertions                          35602          1    Covered                              na                 na                 na                 na 
+        default bin No_Tx_zero_insertions               11552               Occurred                             na                 na                 na                 na 
 
 TOTAL COVERGROUP COVERAGE: 100.0%  COVERGROUP TYPES: 1
-COVERGROUP MEMORY USAGE: Total 38.7KB, Peak 38.7KB at time 23577750 ns for total 12 coverpoints/crosses.
+COVERGROUP MEMORY USAGE: Total 41.1KB, Peak 41.1KB at time 23577750 ns for total 12 coverpoints/crosses.
 DYNAMIC OBJECTS MEMORY USAGE: Total Memory 64B and Peak Memory 80B used at time 7813250 ns for total 4 dynamic objects.
