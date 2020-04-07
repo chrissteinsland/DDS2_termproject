@@ -54,6 +54,10 @@ program testPr_hdlc(
 				bins No_Rx_EoF = {0};
 				bins Rx_EoF = {1};
 			}
+			Rx_zero_insertions: coverpoint uin_hdlc.Rx_Data {
+				bins No_Rx_zero_insertions = default;
+				bins Rx_zero_insertions = {'h3f, 'h7f, 'hff, 'h7e, 'hfc, 'hfe}; 
+			}
 
 			Tx_ValidFrame: coverpoint uin_hdlc.Tx_ValidFrame {
 				bins No_Tx_ValidFrame = {0};
