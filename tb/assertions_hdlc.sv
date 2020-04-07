@@ -35,6 +35,7 @@ module assertions_hdlc (
   input  logic Rx_FCSen,
   input  logic Rx_Drop,
   input  logic Rx_Ready,
+  input  logic[7:0] Rx_Data,
 	input  logic[7:0] Rx_DataBuffOut,
   input	 logic TxEN,
   input  logic Tx,
