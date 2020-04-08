@@ -75,7 +75,8 @@ module assertions_hdlc (
    **********************************************************/
 
   property Tx_start_flag;
-    @(posedge Clk) Tx[*8] ##1 !Tx |-> ##1 Tx[*6] ##1 !Tx;	
+    @(posedge Clk) disable iff(!Rst)
+			Tx[*8] ##1 !Tx |-> ##1 Tx[*6] ##1 !Tx;	
   endproperty
 
   Tx_start_flag_Assert : assert property (Tx_start_flag) 
@@ -85,7 +86,8 @@ module assertions_hdlc (
   end
 	
 	property Tx_end_flag;
-    @(posedge Clk) $fell(Tx_ValidFrame) |=> !Tx ##1 Tx[*6] ##1 !Tx;	
+    @(posedge Clk) disable iff(!Rst)
+			$fell(Tx_ValidFrame) |=> !Tx ##1 Tx[*6] ##1 !Tx;	
   endproperty
 
   Tx_end_flag_Assert : assert property (Tx_end_flag) 
