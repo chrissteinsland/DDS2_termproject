@@ -73,9 +73,6 @@ module assertions_hdlc (
   /**********************************************************
    *  Verify correct start and end frame pattern generation *
    **********************************************************/
-  sequence Tx_flag;
-    !Tx ##1 Tx[*6] ##1 !Tx;	
-  endsequence
 
   property Tx_start_flag;
     @(posedge Clk) Tx[*8] ##1 !Tx |-> ##1 Tx[*6] ##1 !Tx;	
@@ -86,6 +83,17 @@ module assertions_hdlc (
     $error("Start flag not generated at time %0t", $time); 
     ErrCntAssertions++; 
   end
+	
+	property Tx_end_flag;
+    @(posedge Clk) $fell(Tx_ValidFrame) |=> !Tx ##1 Tx[*6] ##1 !Tx;	
+  endproperty
+
+  Tx_end_flag_Assert : assert property (Tx_end_flag) 
+   else begin 
+    $error("End flag not generated at time %0t", $time); 
+    ErrCntAssertions++; 
+  end
+
 
   /********************************************
    *  Verify correct Rx_AbortSignal behavior  *
@@ -149,7 +157,11 @@ module assertions_hdlc (
    ******************************************************************/
 
   // Assertion 6 - zero insertion and removal for transparent transmission 
-  property zero_insertion;
+  sequence Tx_flag;
+    !Tx ##1 Tx[*6] ##1 !Tx;	
+	endsequence
+  
+	property zero_insertion;
     @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:$] Tx[*5] |=> $fell(Tx);
   endproperty
 
