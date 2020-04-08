@@ -78,7 +78,7 @@ module assertions_hdlc (
   endsequence
 
   property Tx_start_flag;
-    @(posedge Clk) Tx[*8] ##1 !Tx |-> Tx_Flag;
+    @(posedge Clk) Tx[*8] ##1 !Tx |-> ##1 Tx[*6] ##1 !Tx;	
   endproperty
 
   Tx_start_flag_Assert : assert property (Tx_start_flag) 
