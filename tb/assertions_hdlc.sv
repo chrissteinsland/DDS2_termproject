@@ -49,8 +49,8 @@ module assertions_hdlc (
   initial begin
     ErrCntAssertions  =  0;
   end
-
-  /*******************************************
+	
+	/*******************************************
    *  Verify correct Rx_FlagDetect behavior  *
    *******************************************/
 
@@ -66,6 +66,21 @@ module assertions_hdlc (
   RX_FlagDetect_Assert : assert property (RX_FlagDetect) 
    else begin 
     $error("Flag sequence did not generate FlagDetect at time %0t", $time); 
+    ErrCntAssertions++; 
+  end
+
+
+  /**********************************************************
+   *  Verify correct start and end frame pattern generation *
+   **********************************************************/
+
+  property TX_start_flag;
+    @(posedge Clk) Tx[*8] ##1 !Tx |-> Tx_Flag;
+  endproperty
+
+  TX_start_flag_Assert : assert property (TX_start_flag) 
+   else begin 
+    $error("Start flag not generated at time %0t", $time); 
     ErrCntAssertions++; 
   end
 
