@@ -59,11 +59,11 @@ module assertions_hdlc (
   endsequence
 
   // Check if flag sequence is detected
-  property Rx_FlagDetect;
+  property Rx_FlagDetected;
     @(posedge Clk) Rx_flag |-> ##2 Rx_FlagDetect;
   endproperty
 
-  Rx_FlagDetect_Assert : assert property (Rx_FlagDetect) 
+  Rx_FlagDetect_Assert : assert property (Rx_FlagDetected) 
    else begin 
     $error("Flag sequence did not generate FlagDetect at time %0t", $time); 
     ErrCntAssertions++; 
@@ -73,7 +73,6 @@ module assertions_hdlc (
   /**********************************************************
    *  Verify correct start and end frame pattern generation *
    **********************************************************/
-
   sequence Tx_flag;
     !Tx ##1 Tx[*6] ##1 !Tx;	
   endsequence
@@ -150,10 +149,6 @@ module assertions_hdlc (
    ******************************************************************/
 
   // Assertion 6 - zero insertion and removal for transparent transmission 
-  sequence Tx_flag;
-    !Tx ##1 Tx[*6] ##1 !Tx;	
-  endsequence
-		
   property zero_insertion;
     @(posedge Clk) disable iff(!Rst || !Tx_ValidFrame) Tx_flag ##[0:$] Tx[*5] |=> $fell(Tx);
   endproperty
