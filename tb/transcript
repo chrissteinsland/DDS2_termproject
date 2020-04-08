@@ -1,0 +1,169 @@
+# vsim -assertdebug -c -coverage -voptargs="+acc" test_hdlc bind_hdlc -do "log -r *; run -all; coverage report -memory -cvg -details -file coverage_rep.txt; exit" 
+# Start time: 12:18:00 on Apr 08,2020
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxFCS(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxBuff(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxController(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "RxController(fast)".
+# ** Warning: ./bind_hdlc.sv(8): (vopt-2685) [TFMPC] - Too few port connections for 'u_assertion_bind'.  Expected 29, found 28.
+# ** Warning: ./bind_hdlc.sv(8): (vopt-2718) [TFMPC] - Missing connection for port 'Rx_FCSerr'.
+# ** Note: (vopt-143) Recognized 1 FSM in module "TxBuff(fast)".
+# //  Questa Sim-64
+# //  Version 10.5c linux_x86_64 Jul 20 2016
+# //
+# //  Copyright 1991-2016 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.test_hdlc(fast)
+# Loading work.in_hdlc(fast)
+# Loading work.Hdlc(fast)
+# Loading work.AddressIF(fast)
+# Loading work.TxController(fast)
+# Loading work.TxBuff(fast)
+# Loading work.TxFCS(fast)
+# Loading work.TxChannel(fast)
+# Loading work.RxController(fast)
+# Loading work.RxBuff(fast)
+# Loading work.RxFCS(fast)
+# Loading work.RxChannel(fast)
+# Loading work.testPr_hdlc(fast)
+# Loading work.assertions_hdlc(fast)
+# Loading work.bind_hdlc(fast)
+# ** Warning: (vsim-3839) ./test_hdlc.sv(61): Variable '/test_hdlc/uin_hdlc/Tx', driven via a port connection, is multiply driven. See ./test_hdlc.sv(68).
+#    Time: 0 ns  Iteration: 0  Instance: /test_hdlc File: ./test_hdlc.sv
+# ** Warning: (vsim-3839) ./test_hdlc.sv(51): Variable '/test_hdlc/uin_hdlc/Tx_Done', driven via a port connection, is multiply driven. See ./test_hdlc.sv(68).
+#    Time: 0 ns  Iteration: 0  Instance: /test_hdlc File: ./test_hdlc.sv
+# ** Warning: (vsim-8634) Code was not compiled with coverage options.
+# log -r *
+#  run -all
+# *************************************************************
+#                    0 - Starting Test Program
+# *************************************************************
+# *************************************************************
+#                 1000 - Starting task Receive - Normal
+# *************************************************************
+# *************************************************************
+#                79250 - Starting task Receive - Abort
+# *************************************************************
+# Abort signal went high as expected
+# *************************************************************
+#               309250 - Starting task Receive - Overflow
+# *************************************************************
+# RX overflow as expected!
+# *************************************************************
+#               990250 - Starting task Receive - Normal
+# *************************************************************
+# *************************************************************
+#              1245750 - Starting task Receive - Normal
+# *************************************************************
+# *************************************************************
+#              1910250 - Starting task Receive - Abort
+# *************************************************************
+# Abort signal went high as expected
+# *************************************************************
+#              2558750 - Starting task Receive - Overflow
+# *************************************************************
+# RX overflow as expected!
+# *************************************************************
+#              3234750 - Starting task Receive - Normal
+# *************************************************************
+# *************************************************************
+#              3391250 - Starting task Receive - Normal
+# *************************************************************
+# *************************************************************
+#              3657250 - Starting task Receive - FCS error
+# *************************************************************
+# Frame size reg (47) is not equal to recieved frames (126)
+# *************************************************************
+#              4321250 - Starting task Receive - Drop
+# *************************************************************
+# Frame size reg (47) is not equal to recieved frames (25)
+# *************************************************************
+#              4476250 - Starting task Receive - FCS error
+# *************************************************************
+# Frame size reg (47) is not equal to recieved frames (83)
+# *************************************************************
+#              4924750 - Starting task Receive - Drop
+# *************************************************************
+# Frame size reg (47) is not equal to recieved frames (69)
+# *************************************************************
+#              5303250 - Starting task Transmit - Normal
+# *************************************************************
+# *************************************************************
+#              5391250 - Starting task Transmit - Abort
+# *************************************************************
+# *************************************************************
+#              5425250 - Starting task Transmit - Normal
+# *************************************************************
+# *************************************************************
+#              5986250 - Starting task Transmit - Normal
+# *************************************************************
+# FCS not correct at time 6092750
+# Data in buffer was d1, expected 9b
+# FCS not correct at time 6096250
+# Data in buffer was 29, expected 34
+# *************************************************************
+#              6101250 - Starting task Transmit - Normal
+# *************************************************************
+# FCS not correct at time 6506250
+# Data in buffer was b2, expected 21
+# FCS not correct at time 6510250
+# Data in buffer was 88, expected b4
+# *************************************************************
+#              6515250 - Starting task Transmit - Normal
+# *************************************************************
+# *************************************************************
+#              7620250 - Starting task TestRxBuffer - Normal
+# *************************************************************
+# *************************************************************
+#              7813250 - Starting task TestRxBuffer - Mismatch
+# *************************************************************
+# Data in RXBuf is not equal to RX_data
+# *************************************************************
+#              8221250 - Starting task TestRxBuffer - Mismatch
+# *************************************************************
+# Data in RXBuf is not equal to RX_data
+# *************************************************************
+#              8763750 - Starting task TestRxBuffer - Normal
+# *************************************************************
+# *************************************************************
+#              9423750 - Starting task TestRxBuffer - Mismatch
+# *************************************************************
+# Data in RXBuf is not equal to RX_data
+# *************************************************************
+#              9465250 - Starting task Transmit to Receive
+# *************************************************************
+# *************************************************************
+#             10139250 - Starting task Overflowing Tx Buffer 
+# *************************************************************
+# *************************************************************
+#             11283750 - Starting task Overflowing Tx Buffer 
+# *************************************************************
+# *************************************************************
+#             12430750 - Starting task Overflowing Tx Buffer 
+# *************************************************************
+# *************************************************************
+#             13577750 - Finishing Test Program
+# *************************************************************
+# ** Note: $stop    : ./testPr_hdlc.sv(320)
+#    Time: 23577750 ns  Iteration: 1  Instance: /test_hdlc/u_testPr
+# Break in Module testPr_hdlc at ./testPr_hdlc.sv line 320
+# Stopped at ./testPr_hdlc.sv line 320
+#  coverage report -memory -cvg -details -file coverage_rep.txt
+#  exit
+# *********************************
+# *                               *
+# * 	Assertion Errors: 4	  *
+# *                               *
+# *********************************
+# End time: 12:18:04 on Apr 08,2020, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 5
